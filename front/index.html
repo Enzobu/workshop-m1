@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyber Escape - Dossier de conception</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <!-- Écran d'accueil -->
+    <div id="welcome-screen" class="screen active">
+      <div class="welcome-container">
+        <div class="logo">
+          <h1>🔒 Cyber Escape</h1>
+          <p class="subtitle">Dossier de conception</p>
+        </div>
+        <div class="welcome-content">
+          <p class="description">
+            Un hacker a verrouillé le réseau du lycée !<br />
+            Trouve les 3 indices cachés pour déverrouiller le système.
+          </p>
+          <div class="welcome-buttons">
+            <button id="start-btn" class="btn btn-primary">Démarrer</button>
+            <button id="help-btn" class="btn btn-secondary">
+              Comment jouer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Écran bureau -->
+    <div id="desktop-screen" class="screen">
+      <div class="desktop-header">
+        <div class="timer">
+          <span id="timer-display">15:00</span>
+        </div>
+        <button id="unlock-btn" class="btn btn-unlock" disabled>
+          🔓 Déverrouiller
+        </button>
+      </div>
+
+      <div class="desktop-background">
+        <div class="desktop-icons">
+          <div class="desktop-icon" data-puzzle="documents">
+            <div class="icon">📁</div>
+            <span>Documents</span>
+            <div class="puzzle-status" id="doc-status"></div>
+          </div>
+          <div class="desktop-icon" data-puzzle="images">
+            <div class="icon">🖼️</div>
+            <span>Images</span>
+            <div class="puzzle-status" id="img-status"></div>
+          </div>
+          <div class="desktop-icon" data-puzzle="mail">
+            <div class="icon">📧</div>
+            <span>Mail</span>
+            <div class="puzzle-status" id="mail-status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modales des énigmes -->
+    <div id="puzzle-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="puzzle-title">Énigme</h2>
+          <div class="modal-controls">
+            <button id="hint-btn" class="btn btn-hint">💡 Indice</button>
+            <button id="close-puzzle" class="btn btn-close">✕</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu dynamique des énigmes -->
+          <div id="puzzle-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modale de déverrouillage -->
+    <div id="unlock-modal" class="modal">
+      <div class="modal-content unlock-modal">
+        <div class="modal-header">
+          <h2>🔓 Déverrouiller le réseau</h2>
+          <button id="close-unlock" class="btn btn-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <p>Entrez le code à 3 chiffres :</p>
+          <div class="code-input">
+            <input
+              type="text"
+              id="code-input"
+              maxlength="3"
+              placeholder="000"
+            />
+          </div>
+          <div class="code-display">
+            <div class="code-digit" data-digit="1">_</div>
+            <div class="code-digit" data-digit="2">_</div>
+            <div class="code-digit" data-digit="3">_</div>
+          </div>
+          <button id="submit-code" class="btn btn-primary">Valider</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Écran de victoire -->
+    <div id="victory-screen" class="screen">
+      <div class="victory-container">
+        <div class="victory-content">
+          <h1>🎉 Félicitations !</h1>
+          <p class="victory-message">
+            Vous avez déverrouillé le réseau du lycée !
+          </p>
+          <div class="victory-stats">
+            <div class="stat">
+              <span class="stat-label">Temps restant :</span>
+              <span id="time-remaining">--:--</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Indices utilisés :</span>
+              <span id="hints-used">0/3</span>
+            </div>
+          </div>
+          <div class="educational-message">
+            <h3>💡 Message pédagogique</h3>
+            <p>
+              Vous venez de découvrir les bases de la cybersécurité !<br />
+              Restez vigilant face aux emails suspects, vérifiez toujours les
+              sources,<br />
+              et gardez un esprit critique sur le web.
+            </p>
+          </div>
+          <button id="play-again" class="btn btn-primary">Rejouer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modale d'aide -->
+    <div id="help-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Comment jouer</h2>
+          <button id="close-help" class="btn btn-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="help-content">
+            <h3>🎯 Objectif</h3>
+            <p>
+              Trouvez 3 indices cachés dans les dossiers pour composer un code à
+              3 chiffres.
+            </p>
+
+            <h3>📁 Documents</h3>
+            <p>
+              Lisez le rapport et trouvez le mot caché en prenant la première
+              lettre de chaque ligne.
+            </p>
+
+            <h3>🖼️ Images</h3>
+            <p>
+              Réglez la luminosité et le contraste pour révéler le message caché
+              dans l'image.
+            </p>
+
+            <h3>📧 Mail</h3>
+            <p>
+              Identifiez les 3 erreurs dans l'email suspect pour obtenir
+              l'indice final.
+            </p>
+
+            <h3>⏰ Temps</h3>
+            <p>Vous avez 15 minutes pour résoudre toutes les énigmes !</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="src/main.js"></script>
+    <script src="src/puzzles/doc.js"></script>
+    <script src="src/puzzles/image.js"></script>
+    <script src="src/puzzles/mail.js"></script>
+  </body>
+</html>

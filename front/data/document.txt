@@ -1,0 +1,20 @@
+RAPPORT DE SÉCURITÉ - RÉSEAU LYCÉE
+
+Tous les systèmes sont opérationnels
+Rien de suspect détecté aujourd'hui
+Ordinateurs fonctionnent normalement
+Incidents signalés : aucun
+Sécurité renforcée depuis hier
+
+Vérifications effectuées :
+- Pare-feu actif
+- Antivirus à jour
+- Sauvegardes OK
+- Accès contrôlés
+
+Recommandations :
+- Maintenir la vigilance
+- Former le personnel
+- Mettre à jour les mots de passe
+
+Signé : Service Informatique

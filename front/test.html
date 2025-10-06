@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Cyber Escape Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .test-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .test-item {
+        margin: 10px 0;
+        padding: 10px;
+        border-left: 4px solid #ddd;
+        background: #f9f9f9;
+      }
+      .test-item.success {
+        border-left-color: #4caf50;
+        background: #e8f5e8;
+      }
+      .test-item.error {
+        border-left-color: #f44336;
+        background: #ffeaea;
+      }
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #2196f3;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 10px 5px;
+      }
+      .btn:hover {
+        background: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>🧪 Test Cyber Escape Game</h1>
+
+      <div id="test-results">
+        <div class="test-item">
+          <strong>⏳ Chargement des fichiers...</strong>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px">
+        <a href="index.html" class="btn">🎮 Lancer le jeu</a>
+        <button onclick="runTests()" class="btn">🔄 Relancer les tests</button>
+      </div>
+    </div>
+
+    <script>
+      function runTests() {
+        const results = document.getElementById("test-results");
+        results.innerHTML =
+          '<div class="test-item"><strong>⏳ Chargement des fichiers...</strong></div>';
+
+        const tests = [
+          { name: "Fichier HTML principal", url: "index.html" },
+          { name: "Fichier CSS", url: "src/styles.css" },
+          { name: "Fichier JavaScript principal", url: "src/main.js" },
+          { name: "Puzzle Documents", url: "src/puzzles/doc.js" },
+          { name: "Puzzle Images", url: "src/puzzles/image.js" },
+          { name: "Puzzle Mail", url: "src/puzzles/mail.js" },
+          { name: "Image glitchée", url: "assets/img/glitch.svg" },
+          { name: "Données document", url: "data/document.txt" },
+          { name: "Données mail", url: "data/mail.html" },
+        ];
+
+        let completed = 0;
+
+        tests.forEach((test, index) => {
+          setTimeout(() => {
+            fetch(test.url)
+              .then((response) => {
+                if (response.ok) {
+                  results.innerHTML += `<div class="test-item success">✅ ${test.name} - OK</div>`;
+                } else {
+                  results.innerHTML += `<div class="test-item error">❌ ${test.name} - Erreur ${response.status}</div>`;
+                }
+              })
+              .catch((error) => {
+                results.innerHTML += `<div class="test-item error">❌ ${test.name} - Erreur: ${error.message}</div>`;
+              })
+              .finally(() => {
+                completed++;
+                if (completed === tests.length) {
+                  results.innerHTML +=
+                    '<div class="test-item success"><strong>🎉 Tests terminés !</strong></div>';
+                }
+              });
+          }, index * 200);
+        });
+      }
+
+      // Lancer les tests automatiquement
+      window.addEventListener("load", runTests);
+    </script>
+  </body>
+</html>
