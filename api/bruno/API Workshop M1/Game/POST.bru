@@ -1,0 +1,28 @@
+meta {
+  name: POST
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{API_local_url}}/api/games
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/ld+json
+}
+
+body:json {
+  {
+    "status": "pending",
+    "difficulty": "easy",
+    "maxPlayer": 2,
+    "startedAt": "2025-10-07",
+    "endAt": null,
+    "serverVersion": 0,
+    "players": [],
+    "events": []
+  }
+}
