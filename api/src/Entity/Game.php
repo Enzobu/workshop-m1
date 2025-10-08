@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Enum\GameDifficultyType;
-use App\Enum\GameStatusType;
+use App\Enum\DifficultyType;
+use App\Enum\StatusType;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,11 +19,11 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, enumType: GameStatusType::class)]
-    private ?GameStatusType $status = null;
+    #[ORM\Column(length: 255, enumType: StatusType::class)]
+    private ?StatusType $status = null;
 
-    #[ORM\Column(length: 255, enumType: GameDifficultyType::class)]
-    private ?GameDifficultyType $difficulty = null;
+    #[ORM\Column(length: 255, enumType: DifficultyType::class)]
+    private ?DifficultyType $difficulty = null;
 
     #[ORM\Column]
     private ?int $maxPlayer = null;
@@ -49,10 +49,17 @@ class Game
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'gameId')]
     private Collection $events;
 
+    /**
+     * @var Collection<int, Enigma>
+     */
+    #[ORM\ManyToMany(targetEntity: Enigma::class, mappedBy: 'games')]
+    private Collection $enigmas;
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->enigmas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,24 +67,24 @@ class Game
         return $this->id;
     }
 
-    public function getStatus(): ?GameStatusType
+    public function getStatus(): ?StatusType
     {
         return $this->status;
     }
 
-    public function setStatus(GameStatusType $status): static
+    public function setStatus(StatusType $status): static
     {
         $this->status = $status;
 
         return $this;
     }
 
-    public function getDifficulty(): ?GameDifficultyType
+    public function getDifficulty(): ?DifficultyType
     {
         return $this->difficulty;
     }
 
-    public function setDifficulty(GameDifficultyType $difficulty): static
+    public function setDifficulty(DifficultyType $difficulty): static
     {
         $this->difficulty = $difficulty;
 
@@ -187,6 +194,33 @@ class Game
             if ($event->getGameId() === $this) {
                 $event->setGameId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Enigma>
+     */
+    public function getEnigmas(): Collection
+    {
+        return $this->enigmas;
+    }
+
+    public function addEnigma(Enigma $enigma): static
+    {
+        if (!$this->enigmas->contains($enigma)) {
+            $this->enigmas->add($enigma);
+            $enigma->addGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnigma(Enigma $enigma): static
+    {
+        if ($this->enigmas->removeElement($enigma)) {
+            $enigma->removeGame($this);
         }
 
         return $this;

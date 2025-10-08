@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum GameStatusType: string
+enum StatusType: string
 {
     case PENDING = 'pending';
     case IN_PROGRESS = 'in_progress';
