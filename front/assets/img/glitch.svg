@@ -1,36 +1,55 @@
 <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="glitch">
+    <!-- Motif de bruit -->
+    <pattern id="noise" patternUnits="userSpaceOnUse" width="8" height="8">
+      <rect width="8" height="8" fill="#000000"/>
+      <circle cx="2" cy="2" r="1" fill="#ffffff" opacity="0.1"/>
+      <circle cx="6" cy="6" r="0.5" fill="#ffffff" opacity="0.05"/>
+      <rect x="1" y="1" width="1" height="1" fill="#ffffff" opacity="0.08"/>
+      <rect x="5" y="5" width="1" height="1" fill="#ffffff" opacity="0.06"/>
+    </pattern>
+    
+    <!-- Filtre de glitch -->
+    <filter id="glitch" x="-50%" y="-50%" width="200%" height="200%">
       <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
-      <feOffset dx="2" dy="0" result="offset1"/>
-      <feOffset dx="-2" dy="0" result="offset2"/>
+      <feOffset dx="3" dy="0" result="offset1"/>
+      <feOffset dx="-3" dy="0" result="offset2"/>
       <feBlend in="SourceGraphic" in2="offset1" mode="screen"/>
       <feBlend in="SourceGraphic" in2="offset2" mode="screen"/>
     </filter>
   </defs>
   
   <!-- Fond sombre -->
-  <rect width="400" height="300" fill="#1a1a1a"/>
+  <rect width="400" height="300" fill="#0a0a0a"/>
   
   <!-- Bruit de fond -->
-  <rect width="400" height="300" fill="url(#noise)" opacity="0.3"/>
+  <rect width="400" height="300" fill="url(#noise)" opacity="0.4"/>
   
-  <!-- Texte principal (caché par défaut) -->
-  <text x="200" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff" filter="url(#glitch)">
+  <!-- Texte principal (très peu visible par défaut) -->
+  <text x="200" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#ffffff" opacity="0.1" filter="url(#glitch)">
     CODE: 7
   </text>
   
-  <!-- Lignes de glitch -->
-  <rect x="0" y="50" width="400" height="2" fill="#ff0000" opacity="0.7"/>
-  <rect x="0" y="100" width="400" height="1" fill="#00ff00" opacity="0.5"/>
-  <rect x="0" y="200" width="400" height="3" fill="#0000ff" opacity="0.6"/>
+  <!-- Texte de glitch (lignes colorées) -->
+  <text x="200" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#ff0000" opacity="0.3">
+    ERROR
+  </text>
+  <text x="200" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#00ff00" opacity="0.3">
+    CORRUPTED
+  </text>
   
-  <!-- Motif de bruit -->
-  <defs>
-    <pattern id="noise" patternUnits="userSpaceOnUse" width="4" height="4">
-      <rect width="4" height="4" fill="#000000"/>
-      <circle cx="1" cy="1" r="0.5" fill="#ffffff" opacity="0.1"/>
-      <circle cx="3" cy="3" r="0.3" fill="#ffffff" opacity="0.05"/>
-    </pattern>
-  </defs>
+  <!-- Lignes de glitch -->
+  <rect x="0" y="40" width="400" height="3" fill="#ff0000" opacity="0.6"/>
+  <rect x="0" y="80" width="400" height="2" fill="#00ff00" opacity="0.4"/>
+  <rect x="0" y="120" width="400" height="1" fill="#0000ff" opacity="0.5"/>
+  <rect x="0" y="180" width="400" height="2" fill="#ff00ff" opacity="0.4"/>
+  <rect x="0" y="220" width="400" height="3" fill="#ffff00" opacity="0.3"/>
+  
+  <!-- Pixels de glitch -->
+  <rect x="50" y="60" width="2" height="2" fill="#ff0000" opacity="0.8"/>
+  <rect x="150" y="90" width="1" height="1" fill="#00ff00" opacity="0.6"/>
+  <rect x="250" y="130" width="3" height="1" fill="#0000ff" opacity="0.7"/>
+  <rect x="350" y="160" width="2" height="2" fill="#ff00ff" opacity="0.5"/>
+  <rect x="100" y="200" width="1" height="3" fill="#ffff00" opacity="0.4"/>
 </svg>
+

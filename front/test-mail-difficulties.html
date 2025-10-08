@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Difficultés Mail</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #333;
+        color: white;
+      }
+      .test-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .difficulty-section {
+        margin: 30px 0;
+        padding: 20px;
+        background: #444;
+        border-radius: 10px;
+      }
+      .difficulty-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #4caf50;
+      }
+      .btn {
+        padding: 10px 20px;
+        background: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .btn:hover {
+        background: #1976d2;
+      }
+      .btn.active {
+        background: #4caf50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>🧪 Test des Difficultés Mail</h1>
+
+      <div class="difficulty-section">
+        <h2 class="difficulty-title">Sélection de la difficulté</h2>
+        <button class="btn active" onclick="testDifficulty('easy')">
+          Facile (3 erreurs)
+        </button>
+        <button class="btn" onclick="testDifficulty('medium')">
+          Moyen (3 erreurs)
+        </button>
+        <button class="btn" onclick="testDifficulty('hard')">
+          Difficile (6 erreurs)
+        </button>
+      </div>
+
+      <div id="puzzle-container">
+        <!-- Le puzzle sera chargé ici -->
+      </div>
+    </div>
+
+    <script src="src/puzzles/mail.js"></script>
+    <script>
+      let currentDifficulty = "easy";
+
+      function testDifficulty(difficulty) {
+        currentDifficulty = difficulty;
+
+        // Mettre à jour les boutons
+        document.querySelectorAll(".btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        // Charger le puzzle avec la difficulté sélectionnée
+        loadMailPuzzleWithDifficulty(
+          document.getElementById("puzzle-container"),
+          difficulty
+        );
+      }
+
+      function loadMailPuzzleWithDifficulty(container, difficulty) {
+        // Configuration de la difficulté
+        const mailPuzzles = {
+          easy: {
+            hint: "Cherche les détails qui ne correspondent pas à un vrai mail officiel : expéditeur, orthographe, liens… Chaque détail compte pour trouver le chiffre.",
+            subject: "Vérification urgente de votre compte",
+            from: "De : service@banquefidèle.com",
+            body: `
+                        <p>Bonjour,</p>
+                        <p>Nous avons remarqué une activité inhabitueIle sur votre compte.</p>
+                        <p>Merci de cliquer sur ce lien pour vérifier vos informations : <a href="http://banquefidèle.net/account" class="suspicious-link">http://banquefidèle.net/account</a></p>
+                        <p>Cordialement,<br>Service client<br>0969390001</p>
+                    `,
+            errors: [
+              {
+                element: ".mail-from",
+                text: "service@banquefidèle.com",
+                reason: "Adresse email suspecte (domaine non officiel)",
+              },
+              {
+                element: ".mail-body",
+                text: "inhabitueIle",
+                reason: "Faute d'orthographe (devrait être 'inhabituelle')",
+              },
+              {
+                element: ".suspicious-link",
+                text: "http://banquefidèle.net/account",
+                reason:
+                  "Lien non sécurisé (http au lieu de https, domaine suspect)",
+              },
+            ],
+            answer: "3",
+            maxErrors: 3,
+          },
+          medium: {
+            hint: "Même si le mail semble correct à première vue, compare-le avec ce que tu sais d'un vrai message officiel : adresse de l'expéditeur, lien, formulation, personnalisation du message… Chaque détail étrange compte.",
+            subject: "Action requise – colis en attente",
+            from: "De : notifications@colis-express.com",
+            body: `
+                        <p>Bonjour,</p>
+                        <p>Nous avons tenté de livrer votre colis mais une erreur est survenue.</p>
+                        <p>Veuillez cliquer sur ce lien pour résoudre le problème et planifier une nouvelle livraison : <a href="https://colis-express.com/delivery" class="suspicious-link">[résoudre mon colis]</a></p>
+                        <p>Merci pour votre réactivité.</p>
+                        <p>Cordialement,<br>Service client Colis Express</p>
+                    `,
+            errors: [
+              {
+                element: ".mail-from",
+                text: "notifications@colis-express.com",
+                reason: "Adresse email suspecte (domaine générique)",
+              },
+              {
+                element: ".suspicious-link",
+                text: "[résoudre mon colis]",
+                reason: "Lien générique sans personnalisation",
+              },
+              {
+                element: ".mail-body",
+                text: "Merci pour votre réactivité",
+                reason:
+                  "Formulation subtilement suspecte (pas de coordonnées officielles)",
+              },
+            ],
+            answer: "4",
+            maxErrors: 3,
+          },
+          hard: {
+            hint: "Compare ce que tu vois (le nom affiché, le texte du lien) avec ce que tu peux vérifier sans cliquer (l'adresse réelle de l'expéditeur, l'URL complète en survol ou en copiant le lien, la nature du fichier joint). Cherche les petites différences — homoglyphes, redirections, double extensions, absence de personnalisation, formulation urgente.",
+            subject: "URGENT — Votre compte sera suspendu dans 24h",
+            from: "De : Google Support &lt;support@goog1e-security.com&gt;",
+            body: `
+                        <p>Bonjour,</p>
+                        <p>Nous avons détecté une activité anormale sur votre compte. Pour éviter la suspension, cliquez ici pour vérifier vos informations et télécharger votre facture de conformité.</p>
+                        <p><a href="https://accounts.google.com/secure-reset" class="suspicious-link">https://accounts.google.com/secure-reset</a> (lien masqué)</p>
+                        <p>Pièce jointe : <span class="attachment">facture_1034.pdf.exe</span></p>
+                        <p>Cordialement,<br>Google Support</p>
+                    `,
+            errors: [
+              {
+                element: ".mail-from",
+                text: "support@goog1e-security.com",
+                reason: "Homoglyphe dans l'adresse (goog1e au lieu de google)",
+              },
+              {
+                element: ".mail-from",
+                text: "Google Support",
+                reason: "Nom affiché ≠ adresse réelle (trompeur)",
+              },
+              {
+                element: ".suspicious-link",
+                text: "https://accounts.google.com/secure-reset",
+                reason: "Lien masqué/URL trompeuse",
+              },
+              {
+                element: ".attachment",
+                text: "facture_1034.pdf.exe",
+                reason: "Pièce jointe à double extension (exécutable déguisé)",
+              },
+              {
+                element: ".mail-subject",
+                text: "URGENT — Votre compte sera suspendu dans 24h",
+                reason: "Formulation urgente/menaçante",
+              },
+              {
+                element: ".mail-body",
+                text: "Bonjour,",
+                reason: "Absence de personnalisation (salut générique)",
+              },
+            ],
+            answer: "6",
+            maxErrors: 6,
+          },
+        };
+
+        const puzzle = mailPuzzles[difficulty];
+
+        container.innerHTML = `
+                <div class="puzzle-hint" style="display: block;">
+                    <strong>💡 Indice :</strong> ${puzzle.hint}
+                </div>
+                
+                <div class="mail-container">
+                    <div class="mail-header">
+                        <div class="mail-subject">${puzzle.subject}</div>
+                        <div class="mail-from">${puzzle.from}</div>
+                    </div>
+                    
+                    <div class="mail-body">
+                        ${puzzle.body}
+                    </div>
+                </div>
+                
+                <div class="code-input-section">
+                    <label for="mail-code">Réponse :</label>
+                    <input type="text" id="mail-code" maxlength="1" placeholder="?" />
+                    <button id="submit-mail" class="btn btn-primary">Valider</button>
+                </div>
+                
+                <div id="mail-feedback" class="feedback"></div>
+                
+                <div class="error-count">
+                    Erreurs trouvées : <span id="error-count">0</span>/${puzzle.maxErrors}
+                </div>
+            `;
+
+        // Configuration des événements (simplifiée pour le test)
+        const codeInput = container.querySelector("#mail-code");
+        const submitBtn = container.querySelector("#submit-mail");
+        const feedback = container.querySelector("#mail-feedback");
+        const errorCount = container.querySelector("#error-count");
+
+        let foundErrors = 0;
+
+        // Configuration des éléments cliquables
+        puzzle.errors.forEach((errorDef, index) => {
+          const element = container.querySelector(errorDef.element);
+          if (!element) return;
+
+          element.style.cursor = "pointer";
+          element.classList.add("highlightable");
+          element.title = "Cliquez pour surligner cette erreur";
+
+          element.addEventListener("click", function () {
+            if (!this.classList.contains("highlighted")) {
+              this.classList.add("highlighted", "correct");
+              foundErrors++;
+              errorCount.textContent = foundErrors;
+
+              this.style.background = "#4caf50";
+              this.style.color = "white";
+              this.style.padding = "2px 4px";
+              this.style.borderRadius = "3px";
+
+              if (foundErrors === puzzle.maxErrors) {
+                feedback.innerHTML = `<div class="success">✅ Toutes les erreurs trouvées ! Réponse = ${puzzle.answer}</div>`;
+                codeInput.value = puzzle.answer;
+              } else {
+                feedback.innerHTML = `<div class="success">✅ Erreur trouvée ! (${foundErrors}/${puzzle.maxErrors})</div>`;
+              }
+            }
+          });
+        });
+
+        // Validation manuelle
+        submitBtn.addEventListener("click", function () {
+          const code = codeInput.value.trim();
+          if (code === puzzle.answer) {
+            feedback.innerHTML = `<div class="success">✅ Correct ! La réponse est ${puzzle.answer}</div>`;
+          } else {
+            feedback.innerHTML = `<div class="error">❌ Incorrect. Trouvez les ${puzzle.maxErrors} erreurs...</div>`;
+          }
+        });
+
+        // Protection contre la navigation des liens
+        const allLinks = container.querySelectorAll("a");
+        allLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Navigation bloquée :", this.href);
+          });
+        });
+      }
+
+      // Charger le niveau facile par défaut
+      testDifficulty("easy");
+    </script>
+  </body>
+</html>

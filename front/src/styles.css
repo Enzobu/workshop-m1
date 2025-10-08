@@ -299,6 +299,174 @@ body {
   margin-bottom: 1rem;
 }
 
+.document-editor h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.document-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+/* Énigme USB */
+.usb-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.usb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.usb-header h3 {
+  color: #2c3e50;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.usb-icon {
+  font-size: 24px;
+  color: #3498db;
+}
+
+.usb-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.usb-files {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Énigme Mise à jour */
+.update-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #28a745;
+}
+
+.update-header h3 {
+  color: #2c3e50;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.update-icon {
+  font-size: 24px;
+  color: #28a745;
+}
+
+.update-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.update-files {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Énigme Ingénierie sociale */
+.social-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.social-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e74c3c;
+}
+
+.social-header h3 {
+  color: #2c3e50;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.social-icon {
+  font-size: 24px;
+  color: #e74c3c;
+}
+
+.social-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.social-scenario {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .document-hint {
   background: #fff3cd;
   border: 1px solid #ffeaa7;
@@ -433,6 +601,13 @@ body {
 .mail-body a {
   color: #007bff;
   text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Indiquer que les liens ne sont pas pour la navigation */
+.mail-body a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 .mail-body .highlight {
@@ -455,6 +630,171 @@ body {
 .mail-body .highlight.incorrect {
   background: #f44336;
   color: white;
+}
+
+.mail-body .attachment {
+  background: #ffeb3b;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.mail-body .attachment:hover {
+  background: #ffc107;
+}
+
+.mail-body .attachment.highlighted {
+  background: #4caf50;
+  color: white;
+}
+
+/* Énigme Chiffrement */
+.cipher-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+}
+
+.cipher-container h3 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.cipher-instructions {
+  background: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cipher-instructions p {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.cipher-instructions .example {
+  background: #fff3e0;
+  border: 1px solid #ffcc02;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: monospace;
+}
+
+.cipher-text {
+  margin-bottom: 1.5rem;
+}
+
+.cipher-text label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.cipher-display {
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 1rem;
+  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.cipher-tools {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.shift-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shift-control label {
+  font-weight: 600;
+  color: #333;
+}
+
+.shift-control input {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.shift-control input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.decrypt-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.decrypt-area label {
+  font-weight: 600;
+  color: #333;
+}
+
+.decrypt-area textarea {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: "Courier New", monospace;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.decrypt-area textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.cipher-validation {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.attempts-count {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 600;
+  color: #856404;
+}
+
+/* Responsive pour l'énigme de chiffrement */
+@media (max-width: 768px) {
+  .cipher-tools {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .cipher-display {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
 }
 
 /* Modale de déverrouillage */

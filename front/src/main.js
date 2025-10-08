@@ -7,6 +7,10 @@ const gameState = {
     documents: false,
     images: false,
     mail: false,
+    cipher: false,
+    usb: false,
+    update: false,
+    social: false,
   },
   hintsUsed: 0,
   maxHints: 3,
@@ -14,6 +18,10 @@ const gameState = {
     documents: null,
     images: null,
     mail: null,
+    cipher: null,
+    usb: null,
+    update: null,
+    social: null,
   },
 };
 
@@ -39,7 +47,9 @@ const elements = {
     closePuzzle: document.getElementById("close-puzzle"),
     submitCode: document.getElementById("submit-code"),
   },
-  timer: document.getElementById("timer-display"),
+  get timer() {
+    return document.getElementById("timer-display");
+  },
   codeInput: document.getElementById("code-input"),
   puzzleContent: document.getElementById("puzzle-content"),
   puzzleTitle: document.getElementById("puzzle-title"),
@@ -66,24 +76,41 @@ function initializeGame() {
 }
 
 function resetGameState() {
+  // Arrêter le timer s'il est en cours
+  if (gameState.timer) {
+    clearInterval(gameState.timer);
+    gameState.timer = null;
+  }
+
   gameState.currentScreen = "welcome";
   gameState.timeRemaining = 15 * 60;
   gameState.completedPuzzles = {
     documents: false,
     images: false,
     mail: false,
+    cipher: false,
+    usb: false,
+    update: false,
+    social: false,
   };
   gameState.hintsUsed = 0;
   gameState.puzzleCodes = {
     documents: null,
     images: null,
     mail: null,
+    cipher: null,
+    usb: null,
+    update: null,
+    social: null,
   };
 
   // Réinitialiser l'interface
   updatePuzzleStatus();
   updateUnlockButton();
   updateTimer();
+
+  // Réinitialiser l'affichage des modales
+  elements.modals.unlock.classList.remove("force-hidden");
 }
 
 function setupEventListeners() {
@@ -162,11 +189,17 @@ function startTimer() {
 }
 
 function updateTimer() {
+  if (!elements.timer) {
+    return;
+  }
+
   const minutes = Math.floor(gameState.timeRemaining / 60);
   const seconds = gameState.timeRemaining % 60;
-  elements.timer.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
+  const timeString = `${minutes.toString().padStart(2, "0")}:${seconds
     .toString()
     .padStart(2, "0")}`;
+
+  elements.timer.textContent = timeString;
 
   // Changement de couleur quand le temps est critique
   if (gameState.timeRemaining <= 60) {
@@ -174,7 +207,7 @@ function updateTimer() {
   } else if (gameState.timeRemaining <= 300) {
     elements.timer.style.color = "#ffa726";
   } else {
-    elements.timer.style.color = "#ff6b6b";
+    elements.timer.style.color = "#4caf50"; // Vert pour le temps normal
   }
 }
 
@@ -208,6 +241,18 @@ function loadPuzzleContent(puzzleType) {
     case "mail":
       loadMailPuzzle(content);
       break;
+    case "cipher":
+      loadCipherPuzzle(content);
+      break;
+    case "usb":
+      loadUsbPuzzle(content);
+      break;
+    case "update":
+      loadUpdatePuzzle(content);
+      break;
+    case "social":
+      loadSocialPuzzle(content);
+      break;
   }
 }
 
@@ -216,6 +261,10 @@ function getPuzzleTitle(puzzleType) {
     documents: "📁 Documents - Acrostiche",
     images: "🖼️ Images - Curseurs",
     mail: "📧 Mail - Phishing",
+    cipher: "🔐 Chiffrement - César",
+    usb: "💾 USB - Supports amovibles",
+    update: "🔄 Mise à jour - Logiciels industriels",
+    social: "🎭 Ingénierie sociale - Mots de passe",
   };
   return titles[puzzleType] || "Énigme";
 }
@@ -256,6 +305,26 @@ function showHint(puzzleType) {
         window.showMailHint();
       }
       break;
+    case "cipher":
+      if (window.showCipherHint) {
+        window.showCipherHint();
+      }
+      break;
+    case "usb":
+      if (window.showUsbHint) {
+        window.showUsbHint();
+      }
+      break;
+    case "update":
+      if (window.showUpdateHint) {
+        window.showUpdateHint();
+      }
+      break;
+    case "social":
+      if (window.showSocialHint) {
+        window.showSocialHint();
+      }
+      break;
   }
 }
 
@@ -284,8 +353,20 @@ function completePuzzle(puzzleType, code) {
 }
 
 function updatePuzzleStatus() {
+  // Mapping des noms de puzzles vers les IDs HTML
+  const puzzleIdMap = {
+    documents: "doc-status",
+    images: "img-status",
+    mail: "mail-status",
+    cipher: "cipher-status",
+    usb: "usb-status",
+    update: "update-status",
+    social: "social-status",
+  };
+
   Object.keys(gameState.completedPuzzles).forEach((puzzleType) => {
-    const statusElement = document.getElementById(`${puzzleType}-status`);
+    const statusId = puzzleIdMap[puzzleType];
+    const statusElement = document.getElementById(statusId);
     if (statusElement) {
       if (gameState.completedPuzzles[puzzleType]) {
         statusElement.classList.add("completed");
@@ -346,8 +427,8 @@ function updateCodeDisplay(value) {
 function submitCode() {
   const code = elements.codeInput.value;
 
-  if (code.length !== 3) {
-    showMessage("Veuillez entrer un code à 3 chiffres", "error");
+  if (code.length !== 7) {
+    showMessage("Veuillez entrer un code à 7 chiffres", "error");
     return;
   }
 
@@ -355,7 +436,16 @@ function submitCode() {
   const expectedCode = Object.values(gameState.puzzleCodes).join("");
 
   if (code === expectedCode) {
-    endGame(true);
+    console.log("Code correct ! Fermeture de la modale...");
+    // Fermer la modale de déverrouillage
+    elements.modals.unlock.classList.remove("active");
+    console.log("Modale fermée, classes:", elements.modals.unlock.className);
+
+    // Attendre un peu que la modale se ferme avant d'afficher la victoire
+    setTimeout(() => {
+      console.log("Appel de endGame(true)");
+      endGame(true);
+    }, 100);
   } else {
     showMessage("Code incorrect ! Vérifiez vos indices.", "error");
     elements.codeInput.classList.add("shake");
@@ -373,9 +463,27 @@ function endGame(victory) {
   }
 
   if (victory) {
-    showScreen("victory");
-    updateVictoryStats();
-    playSound("victory");
+    // Fermer toutes les modales ouvertes
+    Object.values(elements.modals).forEach((modal) => {
+      modal.classList.remove("active");
+    });
+
+    // Forcer la fermeture de la modale de déverrouillage
+    elements.modals.unlock.classList.add("force-hidden");
+
+    // S'assurer que l'écran d'accueil n'est pas actif
+    elements.screens.welcome.classList.remove("active");
+    console.log(
+      "Écran d'accueil désactivé, classes:",
+      elements.screens.welcome.className
+    );
+
+    // Attendre un peu avant d'afficher la victoire
+    setTimeout(() => {
+      showScreen("victory");
+      updateVictoryStats();
+      playSound("victory");
+    }, 50);
   } else {
     showMessage("Temps écoulé ! Le réseau reste verrouillé.", "error");
     setTimeout(() => {
@@ -458,8 +566,15 @@ function loadMailPuzzle(container) {
   }
 }
 
+function loadCipherPuzzle(container) {
+  if (window.loadCipherPuzzle) {
+    window.loadCipherPuzzle(container);
+  }
+}
+
 // Exporter les fonctions nécessaires pour les puzzles
 window.gameState = gameState;
 window.completePuzzle = completePuzzle;
 window.showMessage = showMessage;
 window.playSound = playSound;
+window.showScreen = showScreen;

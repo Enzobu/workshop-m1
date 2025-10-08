@@ -1,42 +1,135 @@
-// Énigme Mail - Détection de phishing
+// Énigme Mail - Détection de phishing (3 niveaux de difficulté)
 function loadMailPuzzle(container) {
+  // Configuration de la difficulté (pour l'instant en dur "easy")
+  const difficulty = "easy";
+
+  // Définition des énigmes selon la difficulté
+  const mailPuzzles = {
+    easy: {
+      hint: "Cherche les détails qui ne correspondent pas à un vrai mail officiel : expéditeur, orthographe, liens… Chaque détail compte pour trouver le chiffre.",
+      subject: "Vérification urgente de votre compte",
+      from: "De : service@banquefidèle.com",
+      body: `
+        <p>Bonjour,</p>
+        <p>Nous avons remarqué une activité inhabitueIle sur votre compte.</p>
+        <p>Merci de cliquer sur ce lien pour vérifier vos informations : <a href="http://banquefidèle.net/account" class="suspicious-link">http://banquefidèle.net/account</a></p>
+        <p>Cordialement,<br>Service client<br>0969390001</p>
+      `,
+      errors: [
+        {
+          element: ".mail-from",
+          text: "service@banquefidèle.com",
+          reason: "Adresse email suspecte (domaine non officiel)",
+        },
+        {
+          element: ".mail-body",
+          text: "inhabitueIle",
+          reason: "Faute d'orthographe (devrait être 'inhabituelle')",
+        },
+        {
+          element: ".suspicious-link",
+          text: "http://banquefidèle.net/account",
+          reason: "Lien non sécurisé (http au lieu de https, domaine suspect)",
+        },
+      ],
+      answer: "3",
+      maxErrors: 3,
+    },
+    medium: {
+      hint: "Même si le mail semble correct à première vue, compare-le avec ce que tu sais d'un vrai message officiel : adresse de l'expéditeur, lien, formulation, personnalisation du message… Chaque détail étrange compte.",
+      subject: "Action requise – colis en attente",
+      from: "De : notifications@colis-express.com",
+      body: `
+        <p>Bonjour,</p>
+        <p>Nous avons tenté de livrer votre colis mais une erreur est survenue.</p>
+        <p>Veuillez cliquer sur ce lien pour résoudre le problème et planifier une nouvelle livraison : <a href="https://colis-express.com/delivery" class="suspicious-link">[résoudre mon colis]</a></p>
+        <p>Merci pour votre réactivité.</p>
+        <p>Cordialement,<br>Service client Colis Express</p>
+      `,
+      errors: [
+        {
+          element: ".mail-from",
+          text: "notifications@colis-express.com",
+          reason: "Adresse email suspecte (domaine générique)",
+        },
+        {
+          element: ".suspicious-link",
+          text: "[résoudre mon colis]",
+          reason: "Lien générique sans personnalisation",
+        },
+        {
+          element: ".mail-body",
+          text: "Merci pour votre réactivité",
+          reason:
+            "Formulation subtilement suspecte (pas de coordonnées officielles)",
+        },
+      ],
+      answer: "4",
+      maxErrors: 3,
+    },
+    hard: {
+      hint: "Compare ce que tu vois (le nom affiché, le texte du lien) avec ce que tu peux vérifier sans cliquer (l'adresse réelle de l'expéditeur, l'URL complète en survol ou en copiant le lien, la nature du fichier joint). Cherche les petites différences — homoglyphes, redirections, double extensions, absence de personnalisation, formulation urgente.",
+      subject: "URGENT — Votre compte sera suspendu dans 24h",
+      from: "De : Google Support &lt;support@goog1e-security.com&gt;",
+      body: `
+        <p>Bonjour,</p>
+        <p>Nous avons détecté une activité anormale sur votre compte. Pour éviter la suspension, cliquez ici pour vérifier vos informations et télécharger votre facture de conformité.</p>
+        <p><a href="https://accounts.google.com/secure-reset" class="suspicious-link">https://accounts.google.com/secure-reset</a> (lien masqué)</p>
+        <p>Pièce jointe : <span class="attachment">facture_1034.pdf.exe</span></p>
+        <p>Cordialement,<br>Google Support</p>
+      `,
+      errors: [
+        {
+          element: ".mail-from",
+          text: "support@goog1e-security.com",
+          reason: "Homoglyphe dans l'adresse (goog1e au lieu de google)",
+        },
+        {
+          element: ".mail-from",
+          text: "Google Support",
+          reason: "Nom affiché ≠ adresse réelle (trompeur)",
+        },
+        {
+          element: ".suspicious-link",
+          text: "https://accounts.google.com/secure-reset",
+          reason: "Lien masqué/URL trompeuse",
+        },
+        {
+          element: ".attachment",
+          text: "facture_1034.pdf.exe",
+          reason: "Pièce jointe à double extension (exécutable déguisé)",
+        },
+        {
+          element: ".mail-subject",
+          text: "URGENT — Votre compte sera suspendu dans 24h",
+          reason: "Formulation urgente/menaçante",
+        },
+        {
+          element: ".mail-body",
+          text: "Bonjour,",
+          reason: "Absence de personnalisation (salut générique)",
+        },
+      ],
+      answer: "6",
+      maxErrors: 6,
+    },
+  };
+
+  const puzzle = mailPuzzles[difficulty];
+
   container.innerHTML = `
         <div class="puzzle-hint" style="display: none;">
-            <strong>💡 Indice :</strong> Regarde l'expéditeur, les liens et les fautes d'orthographe...
+            <strong>💡 Indice :</strong> ${puzzle.hint}
         </div>
         
         <div class="mail-container">
             <div class="mail-header">
-                <div class="mail-subject">URGENT : Votre compte va être suspendu !</div>
-                <div class="mail-from">De : support@microsoft-security.com</div>
+                <div class="mail-subject">${puzzle.subject}</div>
+                <div class="mail-from">${puzzle.from}</div>
             </div>
             
             <div class="mail-body">
-                <p>Cher utilisateur,</p>
-                
-                <p>Nous avons détecté une activité suspecte sur votre compte Microsoft. 
-                Pour des raisons de sécurité, votre compte sera suspendu dans les 24 heures 
-                si vous ne confirmez pas votre identité immédiatement.</p>
-                
-                <p><strong>Cliquez sur ce lien pour vérifier votre compte :</strong><br>
-                <a href="http://microsoft-security-verification.com" class="suspicious-link">
-                    http://microsoft-security-verification.com
-                </a></p>
-                
-                <p>Vous devez fournir les informations suivantes :</p>
-                <ul>
-                    <li>Nom d'utilisateur</li>
-                    <li>Mot de passe actuel</li>
-                    <li>Numéro de carte bancaire</li>
-                    <li>Code de sécurité</li>
-                </ul>
-                
-                <p>Cette action est obligatoire et ne peut pas être annulée. 
-                Si vous ne répondez pas dans les délais, votre compte sera définitivement 
-                supprimé et vous perdrez tous vos données.</p>
-                
-                <p>Cordialement,<br>
-                L'équipe de sécurité Microsoft</p>
+                ${puzzle.body}
             </div>
         </div>
         
@@ -49,7 +142,7 @@ function loadMailPuzzle(container) {
         <div id="mail-feedback" class="feedback"></div>
         
         <div class="error-count">
-            Erreurs trouvées : <span id="error-count">0</span>/3
+            Erreurs trouvées : <span id="error-count">0</span>/${puzzle.maxErrors}
         </div>
     `;
 
@@ -59,36 +152,33 @@ function loadMailPuzzle(container) {
   const feedback = container.querySelector("#mail-feedback");
   const errorCount = container.querySelector("#error-count");
 
-  // Éléments à surligner (erreurs de phishing)
-  const errors = [
-    {
-      element: container.querySelector(".mail-from"),
-      text: "support@microsoft-security.com",
-      reason: "Adresse email suspecte (Microsoft utilise @microsoft.com)",
-    },
-    {
-      element: container.querySelector(".suspicious-link"),
-      text: "http://microsoft-security-verification.com",
-      reason: "Lien suspect (http au lieu de https, domaine non officiel)",
-    },
-    {
-      element: container.querySelector(".mail-body"),
-      text: "Cordialement,",
-      reason: 'Faute d\'orthographe (devrait être "Cordialement")',
-    },
-  ];
+  // Éléments à surligner (erreurs de phishing) - dynamiques selon la difficulté
+  const errors = puzzle.errors.map((errorDef) => {
+    const element = container.querySelector(errorDef.element);
+    return {
+      element: element,
+      text: errorDef.text,
+      reason: errorDef.reason,
+    };
+  });
 
   let foundErrors = 0;
   let highlightedElements = [];
 
   // Configuration des éléments cliquables
   errors.forEach((error, index) => {
+    if (!error.element) return; // Skip si l'élément n'existe pas
+
     const element = error.element;
     element.style.cursor = "pointer";
     element.classList.add("highlightable");
     element.title = "Cliquez pour surligner cette erreur";
 
-    element.addEventListener("click", function () {
+    element.addEventListener("click", function (e) {
+      // Empêcher la navigation pour les liens
+      e.preventDefault();
+      e.stopPropagation();
+
       if (!this.classList.contains("highlighted")) {
         this.classList.add("highlighted", "correct");
         highlightedElements.push(this);
@@ -102,21 +192,20 @@ function loadMailPuzzle(container) {
         this.style.borderRadius = "3px";
 
         // Vérifier si toutes les erreurs sont trouvées
-        if (foundErrors === 3) {
-          feedback.innerHTML =
-            '<div class="success">✅ Toutes les erreurs trouvées ! Indice final = 2</div>';
-          codeInput.value = "2";
+        if (foundErrors === puzzle.maxErrors) {
+          feedback.innerHTML = `<div class="success">✅ Toutes les erreurs trouvées ! Indice final = ${puzzle.answer}</div>`;
+          codeInput.value = puzzle.answer;
           codeInput.disabled = true;
           submitBtn.disabled = true;
           submitBtn.textContent = "✓ Résolu";
 
           setTimeout(() => {
-            completePuzzle("mail", "2");
+            completePuzzle("mail", puzzle.answer);
           }, 1000);
 
           playSound("success");
         } else {
-          feedback.innerHTML = `<div class="success">✅ Erreur trouvée ! (${foundErrors}/3)</div>`;
+          feedback.innerHTML = `<div class="success">✅ Erreur trouvée ! (${foundErrors}/${puzzle.maxErrors})</div>`;
           playSound("hint");
         }
       }
@@ -127,21 +216,19 @@ function loadMailPuzzle(container) {
   submitBtn.addEventListener("click", function () {
     const code = codeInput.value.trim();
 
-    if (code === "2") {
-      feedback.innerHTML =
-        '<div class="success">✅ Correct ! Le chiffre est 2</div>';
+    if (code === puzzle.answer) {
+      feedback.innerHTML = `<div class="success">✅ Correct ! Le chiffre est ${puzzle.answer}</div>`;
       codeInput.disabled = true;
       submitBtn.disabled = true;
       submitBtn.textContent = "✓ Résolu";
 
       setTimeout(() => {
-        completePuzzle("mail", "2");
+        completePuzzle("mail", puzzle.answer);
       }, 1000);
 
       playSound("success");
     } else {
-      feedback.innerHTML =
-        '<div class="error">❌ Incorrect. Trouvez les 3 erreurs dans l\'email...</div>';
+      feedback.innerHTML = `<div class="error">❌ Incorrect. Trouvez les ${puzzle.maxErrors} erreurs dans l'email...</div>`;
       codeInput.classList.add("shake");
       setTimeout(() => {
         codeInput.classList.remove("shake");
@@ -153,7 +240,7 @@ function loadMailPuzzle(container) {
   // Validation en temps réel
   codeInput.addEventListener("input", function () {
     this.value = this.value.replace(/\D/g, ""); // Seulement les chiffres
-    if (foundErrors < 3) {
+    if (foundErrors < puzzle.maxErrors) {
       feedback.innerHTML = "";
     }
   });
@@ -167,6 +254,17 @@ function loadMailPuzzle(container) {
 
   // Focus sur l'input
   codeInput.focus();
+
+  // Protection globale contre la navigation des liens
+  const allLinks = container.querySelectorAll("a");
+  allLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      // Optionnel : afficher un message d'avertissement
+      console.log("Navigation bloquée :", this.href);
+    });
+  });
 }
 
 // Fonction pour afficher l'indice

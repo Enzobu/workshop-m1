@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Énigme Chiffrement</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <style>
+      body {
+        background: #333;
+        color: white;
+        padding: 20px;
+      }
+      .test-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        background: #444;
+        border-radius: 10px;
+      }
+      .btn {
+        padding: 10px 20px;
+        background: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      .btn:hover {
+        background: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>🧪 Test Énigme Chiffrement</h1>
+
+      <div class="test-section">
+        <h2>Test de l'énigme de chiffrement</h2>
+        <p>
+          Cette énigme utilise le chiffrement de César avec 3 niveaux de
+          difficulté.
+        </p>
+        <button class="btn" onclick="testCipher()">Tester l'énigme</button>
+      </div>
+
+      <div id="puzzle-container">
+        <!-- L'énigme sera chargée ici -->
+      </div>
+    </div>
+
+    <script src="src/puzzles/cipher.js"></script>
+    <script>
+      function testCipher() {
+        const container = document.getElementById("puzzle-container");
+        loadCipherPuzzle(container);
+      }
+
+      // Charger l'énigme automatiquement
+      window.addEventListener("load", testCipher);
+    </script>
+  </body>
+</html>

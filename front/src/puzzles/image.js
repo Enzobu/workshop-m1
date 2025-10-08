@@ -7,20 +7,20 @@ function loadImagesPuzzle(container) {
         
         <div class="image-puzzle">
             <div class="image-container">
-                <img id="glitch-image" src="assets/img/glitch.png" alt="Image glitchée" class="glitch-image" />
+                <img id="glitch-image" src="assets/img/glitch.svg" alt="Image glitchée" class="glitch-image" />
             </div>
             
             <div class="controls">
                 <div class="control-group">
                     <label for="brightness">Luminosité :</label>
-                    <input type="range" id="brightness" min="0" max="100" value="40" />
-                    <span class="control-value" id="brightness-value">40</span>
+                    <input type="range" id="brightness" min="0" max="100" value="10" />
+                    <span class="control-value" id="brightness-value">10</span>
                 </div>
                 
                 <div class="control-group">
                     <label for="contrast">Contraste :</label>
-                    <input type="range" id="contrast" min="0" max="100" value="30" />
-                    <span class="control-value" id="contrast-value">30</span>
+                    <input type="range" id="contrast" min="0" max="100" value="90" />
+                    <span class="control-value" id="contrast-value">90</span>
                 </div>
             </div>
             

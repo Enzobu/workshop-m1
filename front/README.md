@@ -4,7 +4,7 @@ Un escape game interactif pour sensibiliser les lycéens à la cybersécurité.
 
 ## 🎯 Objectif
 
-Un hacker a verrouillé le réseau du lycée ! Les élèves doivent trouver 3 indices cachés dans différents dossiers pour composer un code à 3 chiffres et déverrouiller le système.
+Un hacker a verrouillé le réseau du lycée ! Les élèves doivent trouver 7 indices cachés dans différents dossiers pour composer un code à 7 chiffres et déverrouiller le système.
 
 ## 🎮 Gameplay
 
