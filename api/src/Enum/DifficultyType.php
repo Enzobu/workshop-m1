@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum GameDifficultyType: string
+enum DifficultyType: string
 {
     case EASY = 'easy';
     case MEDIUM = 'medium';
