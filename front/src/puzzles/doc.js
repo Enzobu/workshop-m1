@@ -1,7 +1,7 @@
 // Énigme Documents - Acrostiche (3 niveaux de difficulté)
 function loadDocumentsPuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "easy";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const docPuzzles = {
@@ -82,7 +82,7 @@ Analysez ce message pour trouver le chiffre caché.`,
         </div>
         
         <div class="code-input-section">
-            <label for="doc-code">Chiffre 1 :</label>
+            <label for="doc-code">Chiffre :</label>
             <input type="text" id="doc-code" maxlength="1" placeholder="?" />
             <button id="submit-doc" class="btn btn-primary">Valider</button>
         </div>

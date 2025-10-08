@@ -25,7 +25,7 @@ function loadImagesPuzzle(container) {
             </div>
             
             <div class="code-input-section">
-                <label for="img-code">Chiffre 2 :</label>
+                <label for="img-code">Chiffre :</label>
                 <input type="text" id="img-code" maxlength="1" placeholder="?" />
                 <button id="submit-img" class="btn btn-primary">Valider</button>
             </div>

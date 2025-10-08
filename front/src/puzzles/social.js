@@ -1,7 +1,7 @@
 // Énigme Ingénierie sociale - Mots de passe dans l'industrie (3 niveaux de difficulté)
 function loadSocialPuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "hard";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const socialPuzzles = {
@@ -107,7 +107,7 @@ refus + réussite juste après = probable usurpation.`,
         </div>
         
         <div class="code-input-section">
-            <label for="social-code">Chiffre 1 :</label>
+            <label for="social-code">Chiffre :</label>
             <input type="text" id="social-code" maxlength="1" placeholder="?" />
             <button id="submit-social" class="btn btn-primary">Valider</button>
         </div>

@@ -1,8 +1,7 @@
 // État global du jeu
 const gameState = {
   currentScreen: "welcome",
-  timeRemaining: 15 * 60, // 15 minutes en secondes
-  timer: null,
+  difficulty: "easy", // Difficulté par défaut
   completedPuzzles: {
     documents: false,
     images: false,
@@ -11,6 +10,7 @@ const gameState = {
     usb: false,
     update: false,
     social: false,
+    security: false,
   },
   hintsUsed: 0,
   maxHints: 3,
@@ -22,6 +22,7 @@ const gameState = {
     usb: null,
     update: null,
     social: null,
+    security: null,
   },
 };
 
@@ -47,17 +48,50 @@ const elements = {
     closePuzzle: document.getElementById("close-puzzle"),
     submitCode: document.getElementById("submit-code"),
   },
-  get timer() {
-    return document.getElementById("timer-display");
-  },
   codeInput: document.getElementById("code-input"),
   puzzleContent: document.getElementById("puzzle-content"),
   puzzleTitle: document.getElementById("puzzle-title"),
   hintBtn: document.getElementById("hint-btn"),
 };
 
+// Fonction pour récupérer la difficulté depuis l'API
+async function fetchGameDifficulty() {
+  try {
+    const response = await fetch("http://qg.enzo-palermo.com:8000/api/games/2");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Données récupérées de l'API:", data);
+
+    // Vérifier si la propriété difficulty existe
+    if (data.difficulty) {
+      gameState.difficulty = data.difficulty;
+      console.log("✅ Difficulté récupérée de l'API:", data.difficulty);
+      console.log("🎮 Toutes les énigmes utiliseront cette difficulté");
+    } else {
+      console.warn('Propriété "difficulty" non trouvée dans la réponse API');
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la difficulté:", error);
+    // Garder la difficulté par défaut en cas d'erreur
+    console.log(
+      "Utilisation de la difficulté par défaut:",
+      gameState.difficulty
+    );
+    return null;
+  }
+}
+
 // Initialisation
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  // Récupérer la difficulté depuis l'API avant d'initialiser le jeu
+  await fetchGameDifficulty();
+
   initializeGame();
   setupEventListeners();
 });
@@ -76,14 +110,7 @@ function initializeGame() {
 }
 
 function resetGameState() {
-  // Arrêter le timer s'il est en cours
-  if (gameState.timer) {
-    clearInterval(gameState.timer);
-    gameState.timer = null;
-  }
-
   gameState.currentScreen = "welcome";
-  gameState.timeRemaining = 15 * 60;
   gameState.completedPuzzles = {
     documents: false,
     images: false,
@@ -92,6 +119,7 @@ function resetGameState() {
     usb: false,
     update: false,
     social: false,
+    security: false,
   };
   gameState.hintsUsed = 0;
   gameState.puzzleCodes = {
@@ -102,12 +130,13 @@ function resetGameState() {
     usb: null,
     update: null,
     social: null,
+    security: null,
   };
 
   // Réinitialiser l'interface
   updatePuzzleStatus();
   updateUnlockButton();
-  updateTimer();
+  updateProgressTable();
 
   // Réinitialiser l'affichage des modales
   elements.modals.unlock.classList.remove("force-hidden");
@@ -115,7 +144,12 @@ function resetGameState() {
 
 function setupEventListeners() {
   // Boutons principaux
-  elements.buttons.start.addEventListener("click", startGame);
+  if (elements.buttons.start) {
+    elements.buttons.start.addEventListener("click", startGame);
+  } else {
+    console.error("Bouton start non trouvé !");
+  }
+
   elements.buttons.help.addEventListener("click", showHelp);
   elements.buttons.playAgain.addEventListener("click", restartGame);
   elements.buttons.unlock.addEventListener("click", showUnlockModal);
@@ -155,8 +189,8 @@ function setupEventListeners() {
 }
 
 function startGame() {
+  console.log("Démarrage du jeu...");
   showScreen("desktop");
-  startTimer();
   playSound("start");
 }
 
@@ -170,44 +204,8 @@ function showScreen(screenName) {
   if (elements.screens[screenName]) {
     elements.screens[screenName].classList.add("active");
     gameState.currentScreen = screenName;
-  }
-}
-
-function startTimer() {
-  if (gameState.timer) {
-    clearInterval(gameState.timer);
-  }
-
-  gameState.timer = setInterval(() => {
-    gameState.timeRemaining--;
-    updateTimer();
-
-    if (gameState.timeRemaining <= 0) {
-      endGame(false);
-    }
-  }, 1000);
-}
-
-function updateTimer() {
-  if (!elements.timer) {
-    return;
-  }
-
-  const minutes = Math.floor(gameState.timeRemaining / 60);
-  const seconds = gameState.timeRemaining % 60;
-  const timeString = `${minutes.toString().padStart(2, "0")}:${seconds
-    .toString()
-    .padStart(2, "0")}`;
-
-  elements.timer.textContent = timeString;
-
-  // Changement de couleur quand le temps est critique
-  if (gameState.timeRemaining <= 60) {
-    elements.timer.style.color = "#ff6b6b";
-  } else if (gameState.timeRemaining <= 300) {
-    elements.timer.style.color = "#ffa726";
   } else {
-    elements.timer.style.color = "#4caf50"; // Vert pour le temps normal
+    console.error(`Écran ${screenName} non trouvé !`);
   }
 }
 
@@ -253,6 +251,9 @@ function loadPuzzleContent(puzzleType) {
     case "social":
       loadSocialPuzzle(content);
       break;
+    case "security":
+      loadSecurityPuzzle(content);
+      break;
   }
 }
 
@@ -265,6 +266,7 @@ function getPuzzleTitle(puzzleType) {
     usb: "💾 USB - Supports amovibles",
     update: "🔄 Mise à jour - Logiciels industriels",
     social: "🎭 Ingénierie sociale - Mots de passe",
+    security: "🔒 Sécurité - Cybersécurité physique",
   };
   return titles[puzzleType] || "Énigme";
 }
@@ -325,6 +327,11 @@ function showHint(puzzleType) {
         window.showSocialHint();
       }
       break;
+    case "security":
+      if (window.showSecurityHint) {
+        window.showSecurityHint();
+      }
+      break;
   }
 }
 
@@ -335,6 +342,7 @@ function completePuzzle(puzzleType, code) {
   // Mettre à jour l'interface
   updatePuzzleStatus();
   updateUnlockButton();
+  updateProgressTable();
 
   // Fermer la modale
   hidePuzzleModal();
@@ -362,6 +370,7 @@ function updatePuzzleStatus() {
     usb: "usb-status",
     update: "update-status",
     social: "social-status",
+    security: "security-status",
   };
 
   Object.keys(gameState.completedPuzzles).forEach((puzzleType) => {
@@ -388,6 +397,40 @@ function updateUnlockButton() {
   } else {
     elements.buttons.unlock.classList.remove("pulse");
   }
+}
+
+function updateProgressTable() {
+  // Mapping des noms de puzzles vers les IDs HTML du tableau de progression
+  const progressIdMap = {
+    documents: "doc-progress",
+    images: "img-progress",
+    mail: "mail-progress",
+    cipher: "cipher-progress",
+    usb: "usb-progress",
+    update: "update-progress",
+    social: "social-progress",
+    security: "security-progress",
+  };
+
+  Object.keys(gameState.completedPuzzles).forEach((puzzleType) => {
+    const progressId = progressIdMap[puzzleType];
+    const progressElement = document.getElementById(progressId);
+    if (progressElement) {
+      const codeDisplay = progressElement.querySelector(".code-display");
+      if (codeDisplay) {
+        if (
+          gameState.completedPuzzles[puzzleType] &&
+          gameState.puzzleCodes[puzzleType]
+        ) {
+          codeDisplay.textContent = gameState.puzzleCodes[puzzleType];
+          codeDisplay.classList.add("found");
+        } else {
+          codeDisplay.textContent = "-";
+          codeDisplay.classList.remove("found");
+        }
+      }
+    }
+  });
 }
 
 function showUnlockModal() {
@@ -427,8 +470,8 @@ function updateCodeDisplay(value) {
 function submitCode() {
   const code = elements.codeInput.value;
 
-  if (code.length !== 7) {
-    showMessage("Veuillez entrer un code à 7 chiffres", "error");
+  if (code.length !== 8) {
+    showMessage("Veuillez entrer un code à 8 chiffres", "error");
     return;
   }
 
@@ -457,11 +500,6 @@ function submitCode() {
 }
 
 function endGame(victory) {
-  // Arrêter le timer
-  if (gameState.timer) {
-    clearInterval(gameState.timer);
-  }
-
   if (victory) {
     // Fermer toutes les modales ouvertes
     Object.values(elements.modals).forEach((modal) => {
@@ -471,31 +509,16 @@ function endGame(victory) {
     // Forcer la fermeture de la modale de déverrouillage
     elements.modals.unlock.classList.add("force-hidden");
 
-    // S'assurer que l'écran d'accueil n'est pas actif
-    elements.screens.welcome.classList.remove("active");
-    console.log(
-      "Écran d'accueil désactivé, classes:",
-      elements.screens.welcome.className
-    );
-
     // Attendre un peu avant d'afficher la victoire
     setTimeout(() => {
       showScreen("victory");
       updateVictoryStats();
       playSound("victory");
     }, 50);
-  } else {
-    showMessage("Temps écoulé ! Le réseau reste verrouillé.", "error");
-    setTimeout(() => {
-      restartGame();
-    }, 3000);
   }
 }
 
 function updateVictoryStats() {
-  document.getElementById("time-remaining").textContent = `${Math.floor(
-    gameState.timeRemaining / 60
-  )}:${(gameState.timeRemaining % 60).toString().padStart(2, "0")}`;
   document.getElementById(
     "hints-used"
   ).textContent = `${gameState.hintsUsed}/${gameState.maxHints}`;
@@ -578,3 +601,4 @@ window.completePuzzle = completePuzzle;
 window.showMessage = showMessage;
 window.playSound = playSound;
 window.showScreen = showScreen;
+window.fetchGameDifficulty = fetchGameDifficulty;

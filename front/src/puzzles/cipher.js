@@ -1,7 +1,7 @@
 // Énigme Chiffrement - Chiffrement de César (3 niveaux de difficulté)
 function loadCipherPuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "easy";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const cipherPuzzles = {

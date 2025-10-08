@@ -15,9 +15,9 @@
         z-index: 1 !important;
       }
 
-      /* Quand l'écran bureau est actif, il doit être au-dessus */
+      /* Quand l'écran bureau est actif, l'écran d'accueil reste visible mais en arrière-plan */
       #desktop-screen.active {
-        z-index: 20 !important;
+        z-index: 5 !important;
       }
 
       /* L'écran de victoire doit être au-dessus de tout */
@@ -45,7 +45,7 @@
       <div class="welcome-container">
         <div class="logo">
           <h1>🔒 Cyber Escape</h1>
-          <p class="subtitle">Dossier de conception</p>
+          <p class="subtitle">Sensibilisation à la cybersécurité</p>
         </div>
         <div class="welcome-content">
           <p class="description">
@@ -65,25 +65,47 @@
     <!-- Écran bureau -->
     <div id="desktop-screen" class="screen">
       <div class="desktop-header">
-        <div class="timer">
-          <span id="timer-display">15:00</span>
+        <div class="puzzle-progress">
+          <h3>Progression des énigmes</h3>
+          <div class="progress-table">
+            <div class="progress-row header">
+              <span>Énigme</span>
+              <span>Code trouvé</span>
+            </div>
+            <div class="progress-row" id="doc-progress">
+              <span>📁 Documents</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="img-progress">
+              <span>🖼️ Images</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="mail-progress">
+              <span>📧 Mail</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="cipher-progress">
+              <span>🔐 Chiffrement</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="usb-progress">
+              <span>💾 USB</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="update-progress">
+              <span>🔄 Mise à jour</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="social-progress">
+              <span>🎭 Ingénierie sociale</span>
+              <span class="code-display">-</span>
+            </div>
+            <div class="progress-row" id="security-progress">
+              <span>🔒 Sécurité</span>
+              <span class="code-display">-</span>
+            </div>
+          </div>
         </div>
-        <button id="unlock-btn" class="btn btn-unlock" disabled>
-          🔓 Déverrouiller
-        </button>
-        <button
-          onclick="showScreen('welcome')"
-          style="
-            background: #2196f3;
-            color: white;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border: none;
-            border-radius: 3px;
-          "
-        >
-          🏠 Accueil
-        </button>
       </div>
 
       <div class="desktop-background">
@@ -120,9 +142,21 @@
           </div>
           <div class="desktop-icon" data-puzzle="social">
             <div class="icon">🎭</div>
-            <span>Ingénierie sociale</span>
+            <span style="text-align: center">Ingénierie sociale</span>
             <div class="puzzle-status" id="social-status"></div>
           </div>
+          <div class="desktop-icon" data-puzzle="security">
+            <div class="icon">🔒</div>
+            <span>Sécurité</span>
+            <div class="puzzle-status" id="security-status"></div>
+          </div>
+        </div>
+
+        <!-- Bouton de déverrouillage -->
+        <div class="unlock-section">
+          <button id="unlock-btn" class="btn btn-unlock-large" disabled>
+            🔓 Déverrouiller le réseau
+          </button>
         </div>
       </div>
     </div>
@@ -152,13 +186,13 @@
           <button id="close-unlock" class="btn btn-close">✕</button>
         </div>
         <div class="modal-body">
-          <p>Entrez le code à 7 chiffres :</p>
+          <p>Entrez le code à 8 chiffres :</p>
           <div class="code-input">
             <input
               type="text"
               id="code-input"
-              maxlength="7"
-              placeholder="0000000"
+              maxlength="8"
+              placeholder="00000000"
             />
           </div>
           <div class="code-display">
@@ -169,6 +203,7 @@
             <div class="code-digit" data-digit="5">_</div>
             <div class="code-digit" data-digit="6">_</div>
             <div class="code-digit" data-digit="7">_</div>
+            <div class="code-digit" data-digit="8">_</div>
           </div>
           <button id="submit-code" class="btn btn-primary">Valider</button>
         </div>
@@ -184,10 +219,6 @@
             Vous avez déverrouillé le réseau du lycée !
           </p>
           <div class="victory-stats">
-            <div class="stat">
-              <span class="stat-label">Temps restant :</span>
-              <span id="time-remaining">--:--</span>
-            </div>
             <div class="stat">
               <span class="stat-label">Indices utilisés :</span>
               <span id="hints-used">0/3</span>
@@ -218,12 +249,12 @@
           <div class="help-content">
             <h3>🎯 Objectif</h3>
             <p>
-              Trouvez 7 indices cachés dans les dossiers pour composer un code à
-              7 chiffres.
+              Trouvez 8 indices cachés dans les dossiers pour composer un code à
+              8 chiffres.
             </p>
 
             <h3>📁 Documents</h3>
-            <p>Lisez le rapport et trouvez le mot caché daans ce texte.</p>
+            <p>Lisez le rapport et trouvez le code caché dans ce texte.</p>
 
             <h3>🖼️ Images</h3>
             <p>
@@ -261,8 +292,11 @@
               des codes d'accès et des informations sensibles.
             </p>
 
-            <h3>⏰ Temps</h3>
-            <p>Vous avez 15 minutes pour résoudre toutes les énigmes !</p>
+            <h3>🔒 Sécurité</h3>
+            <p>
+              Analysez les incidents de cybersécurité physique et
+              sensibilisez-vous aux bonnes pratiques de sécurité au travail.
+            </p>
           </div>
         </div>
       </div>
@@ -276,5 +310,6 @@
     <script src="src/puzzles/usb.js"></script>
     <script src="src/puzzles/update.js"></script>
     <script src="src/puzzles/social.js"></script>
+    <script src="src/puzzles/security.js"></script>
   </body>
 </html>

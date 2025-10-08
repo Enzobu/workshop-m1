@@ -1,7 +1,7 @@
 // Énigme Mail - Détection de phishing (3 niveaux de difficulté)
 function loadMailPuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "easy";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const mailPuzzles = {
@@ -134,7 +134,7 @@ function loadMailPuzzle(container) {
         </div>
         
         <div class="code-input-section">
-            <label for="mail-code">Chiffre 3 :</label>
+            <label for="mail-code">Chiffre :</label>
             <input type="text" id="mail-code" maxlength="1" placeholder="?" />
             <button id="submit-mail" class="btn btn-primary">Valider</button>
         </div>

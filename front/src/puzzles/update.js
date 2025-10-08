@@ -1,7 +1,7 @@
 // Énigme Mise à jour - Gestion des logiciels industriels (3 niveaux de difficulté)
 function loadUpdatePuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "hard";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const updatePuzzles = {
@@ -118,7 +118,7 @@ comme FAIL ou UNKNOWN dans des journaux sont des signaux d'alerte.`,
         </div>
         
         <div class="code-input-section">
-            <label for="update-code">Chiffre 1 :</label>
+            <label for="update-code">Chiffre :</label>
             <input type="text" id="update-code" maxlength="1" placeholder="?" />
             <button id="submit-update" class="btn btn-primary">Valider</button>
         </div>

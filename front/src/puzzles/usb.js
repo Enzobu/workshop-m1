@@ -1,7 +1,7 @@
 // Énigme USB - Supports amovibles (3 niveaux de difficulté)
 function loadUsbPuzzle(container) {
-  // Configuration de la difficulté (pour l'instant en dur "easy")
-  const difficulty = "easy";
+  // Configuration de la difficulté depuis l'API
+  const difficulty = window.gameState?.difficulty || "easy";
 
   // Définition des énigmes selon la difficulté
   const usbPuzzles = {
@@ -15,7 +15,7 @@ Elle n'a pas d'étiquette et tu ne sais pas à qui elle appartient.
 
 Sur la clé USB, un fichier texte contient la séquence :
 
-INF0MARTIONCONFIDENTIELLES
+INF0RMATIONCONFIDENTIELLES
 
 Tâche : Trouve la position du chiffre dans le mot, celui-ci sera ta clé.
 
@@ -93,7 +93,7 @@ Dans un réseau industriel, un script malveillant peut :
         </div>
         
         <div class="code-input-section">
-            <label for="usb-code">Chiffre 1 :</label>
+            <label for="usb-code">Chiffre :</label>
             <input type="text" id="usb-code" maxlength="1" placeholder="?" />
             <button id="submit-usb" class="btn btn-primary">Valider</button>
         </div>
