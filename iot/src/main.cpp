@@ -164,6 +164,55 @@ static String formatCountdown(long remainingMs) {
   return String(buf);
 }
 
+bool checkEndAt(const String& gameId) {
+  String base = String(API_BASE);
+  if (!base.startsWith("http://") && !base.startsWith("https://")) base = "http://" + base;
+  if (base.endsWith("/")) base.remove(base.length() - 1);
+  String url = base + "/api/games/" + gameId;
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println(F("[checkEndAt] WiFi non connecté"));
+    return false;
+  }
+
+  std::unique_ptr<WiFiClient> baseClient;
+  if (url.startsWith("https://")) {
+    auto *secure = new BearSSL::WiFiClientSecure();
+    secure->setInsecure();
+    secure->setBufferSizes(4096, 1024);
+    baseClient.reset(secure);
+  } else {
+    baseClient.reset(new WiFiClient());
+  }
+
+  HTTPClient http;
+  http.setTimeout(6000);
+  http.setReuse(false);
+  http.useHTTP10(true);
+
+  if (!http.begin(*baseClient, url)) {
+    Serial.println(F("[checkEndAt] Échec http.begin()"));
+    return false;
+  }
+
+  int code = http.GET();
+  String resp = (code > 0) ? http.getString() : String();
+
+  Serial.printf("[checkEndAt] GET %s -> %d\n", url.c_str(), code);
+  if (code != HTTP_CODE_OK) { http.end(); return false; }
+
+  DynamicJsonDocument doc(4096);
+  auto err = deserializeJson(doc, resp);
+  http.end();
+  if (err) {
+    Serial.printf("[checkEndAt] JSON error: %s\n", err.c_str());
+    return false;
+  }
+
+  // true si endAt existe et n'est pas null
+  return (doc.containsKey("endAt") && !doc["endAt"].isNull());
+}
+
 // --- Poll l'API jusqu'à ce que startedAt != null ---
 bool pollStartedAt(const String& gameId) {
   String base = String(API_BASE);
@@ -459,13 +508,17 @@ void loop() {
 
       static bool hasStarted = false;
       static unsigned long startMs = 0;
+      static unsigned long lastEndPoll = 0;       // pour poll endAt
+      const unsigned long pollInterval = 5000UL;  // 5s
       const unsigned long totalDuration = 5UL * 60UL * 1000UL; // 5 minutes
 
+      // PHASE 1 : on attend le départ (poll startedAt)
       if (!hasStarted) {
         bool startedNow = pollStartedAt(gameId);
         if (startedNow) {
           hasStarted = true;
           startMs = millis();
+          lastEndPoll = 0; // reset pour la phase 2
           digitalWrite(LEDV, HIGH); delay(150); digitalWrite(LEDV, LOW);
         } else {
           lcdPrintLine(3, "En attente de depart");
@@ -474,33 +527,39 @@ void loop() {
         }
       }
 
-      // Phase 2 : compte à rebours
+      // PHASE 2 : compte à rebours local
       long elapsed = (long)(millis() - startMs);
       long remaining = (long)totalDuration - elapsed;
+
+      // Poll endAt toutes les 5s (sans bloquer)
+      if (millis() - lastEndPoll >= pollInterval) {
+        lastEndPoll = millis();
+        bool endedRemotely = checkEndAt(gameId);
+        if (endedRemotely) {
+          // fin immédiate si l'API a marqué la fin
+          remaining = 0;
+        }
+      }
 
       if (remaining <= 0) {
         // === FIN DE PARTIE ===
         lcdPrintLine(1, "");
         lcdPrintLine(2, "   Partie terminee !");
         lcdPrintLine(3, "       00:00");
-
-        // clignotement LED rouge
         for (int i = 0; i < 6; i++) {
-          digitalWrite(LEDR, HIGH);
-          delay(300);
-          digitalWrite(LEDR, LOW);
-          delay(300);
+          digitalWrite(LEDR, HIGH); delay(300);
+          digitalWrite(LEDR, LOW);  delay(300);
         }
-
-        // retour à l’écran d’attente
+        // reset état et retour standby
         gameId = "";
         standby = true;
         hasStarted = false;
+
         lcdPrintLine(0, "    Cyber Escape");
         lcdPrintLine(1, "");
         lcdPrintLine(2, "    Appuyez pour");
         lcdPrintLine(3, "     commencer");
-        break; // on sort de la boucle de partie
+        break; // sortie de la boucle de partie
       }
 
       String timer = formatCountdown(remaining);
@@ -508,7 +567,6 @@ void loop() {
 
       delay(1000);
     }
-
   }
 
   delay(50);
