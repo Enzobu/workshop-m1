@@ -41,7 +41,7 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | s
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure Apache
-ADD docker/apache/entrypoint.sh /entrypoint.sh
+ADD api/docker/apache/entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh && \
     a2enmod rewrite remoteip ssl
 

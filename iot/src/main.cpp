@@ -7,10 +7,11 @@
 #include <Wire.h>
 
 // Config Wi-Fi
-const char* WIFI_SSID = "A15 de Enzo";
+// const char* WIFI_SSID = "MyDIL_2G";
 // const char* WIFI_PASS = "MyD1LP@sswOrd";
+const char* WIFI_SSID = "A15 de Enzo";
 const char* WIFI_PASS = "h6rl7abu";
-const char* API_BASE  = "http://10.188.136.13:8000";
+const char* API_BASE  = "http://qg.enzo-palermo.com:8000";
 
 // Écran LCD I2C (adresse la plus courante : 0x27 ou 0x3F)
 LiquidCrystal_I2C lcd(0x27, 20, 4);
@@ -510,7 +511,7 @@ void loop() {
       static unsigned long startMs = 0;
       static unsigned long lastEndPoll = 0;       // pour poll endAt
       const unsigned long pollInterval = 5000UL;  // 5s
-      const unsigned long totalDuration = 5UL * 60UL * 1000UL; // 5 minutes
+      const unsigned long totalDuration = 45UL * 60UL * 1000UL; // 5 minutes
 
       // PHASE 1 : on attend le départ (poll startedAt)
       if (!hasStarted) {
