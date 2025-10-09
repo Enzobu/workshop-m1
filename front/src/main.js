@@ -57,7 +57,10 @@ const elements = {
 // Fonction pour récupérer la difficulté depuis l'API
 async function fetchGameDifficulty() {
   try {
-    const response = await fetch("http://qg.enzo-palermo.com:8000/api/games/2");
+    const params = new URLSearchParams(window.location.search);
+    const gameId = Number(params.get("gameId"));
+
+    const response = await fetch("http://qg.enzo-palermo.com:8000/api/games/" + gameId);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
