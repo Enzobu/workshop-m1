@@ -231,7 +231,7 @@ function loadMailPuzzle(container) {
           submitBtn.textContent = "✓ Résolu";
 
           setTimeout(() => {
-            completePuzzle("mail", puzzle.answer);
+            completePuzzle("mail", puzzle.answer, 3, true);
           }, 1000);
 
           playSound("success");
@@ -253,7 +253,7 @@ function loadMailPuzzle(container) {
       submitBtn.textContent = "✓ Résolu";
 
       setTimeout(() => {
-        completePuzzle("mail", puzzle.answer);
+        completePuzzle("mail", puzzle.answer, 3, true);
       }, 1000);
 
       playSound("success");

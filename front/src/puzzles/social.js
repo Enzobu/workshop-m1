@@ -144,7 +144,7 @@ refus + réussite juste après = probable usurpation.`,
 
       // Compléter le puzzle
       setTimeout(() => {
-        completePuzzle("social", puzzle.answer);
+        completePuzzle("social", puzzle.answer, 7, true);
       }, 1000);
 
       playSound("success");

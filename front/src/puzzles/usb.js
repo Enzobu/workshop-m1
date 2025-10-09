@@ -130,7 +130,7 @@ Dans un réseau industriel, un script malveillant peut :
 
       // Compléter le puzzle
       setTimeout(() => {
-        completePuzzle("usb", puzzle.answer);
+        completePuzzle("usb", puzzle.answer, 5, true);
       }, 1000);
 
       playSound("success");

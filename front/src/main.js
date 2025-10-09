@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   initializeGame();
   setupEventListeners();
+  startEnigmaPolling();
 });
 
 function initializeGame() {
@@ -338,29 +339,120 @@ function showHint(puzzleType) {
   }
 }
 
-function completePuzzle(puzzleType, code) {
+async function updateEnigmaStatus(enigmaNumber) {
+  const params = new URLSearchParams(window.location.search);
+  const gameId = Number(params.get("gameId"));
+
+  if (!gameId) {
+    console.warn("Aucun gameId trouvé dans l'URL — impossible de mettre à jour les énigmes.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://qg.enzo-palermo.com:8000/api/enigmas");
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const data = await response.json();
+
+    const enigma = data.member.find(
+      (e) => e.games[0] === `/api/games/${gameId}` && e.number === enigmaNumber
+    );
+
+    if (!enigma) {
+      console.warn(`Aucune énigme trouvée pour gameId=${gameId}, enigmaNumber=${enigmaNumber}`);
+      return;
+    }
+
+    console.log(`📡 Mise à jour de l'énigme ${enigma.name} → finished`);
+
+    await fetch(`http://qg.enzo-palermo.com:8000/api/enigmas/${enigma.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/merge-patch+json",
+        Accept: "application/ld+json",
+      },
+      body: JSON.stringify({ status: "finished" }),
+    });
+  } catch (err) {
+    console.error("Erreur lors de la mise à jour de l'énigme:", err);
+  }
+}
+
+function completePuzzle(puzzleType, code, enigmaNumber, isCallingBack = false) {
   gameState.completedPuzzles[puzzleType] = true;
   gameState.puzzleCodes[puzzleType] = code;
 
-  // Mettre à jour l'interface
+  if (isCallingBack) {
+    updateEnigmaStatus(enigmaNumber);
+  }
+
   updatePuzzleStatus();
   updateUnlockButton();
   updateProgressTable();
-
-  // Fermer la modale
   hidePuzzleModal();
-
-  // Son de succès
   playSound("success");
 
-  // Vérifier si tous les puzzles sont résolus
-  if (
-    Object.values(gameState.completedPuzzles).every((completed) => completed)
-  ) {
-    // Tous les puzzles sont résolus, activer le bouton de déverrouillage
+  if (Object.values(gameState.completedPuzzles).every((c) => c)) {
     elements.buttons.unlock.disabled = false;
     elements.buttons.unlock.classList.add("pulse");
   }
+}
+
+
+async function startEnigmaPolling() {
+  const params = new URLSearchParams(window.location.search);
+  const gameId = Number(params.get("gameId"));
+  if (!gameId) {
+    console.warn("Aucun gameId trouvé dans l'URL — impossible de surveiller les énigmes.");
+    return;
+  }
+
+  const finishedEnigmas = new Set();
+
+  // Codes fixes selon la difficulté
+  const codesByDifficulty = {
+    easy: [3, 7, 3, 5, 0, 3, 9, 8],
+    medium: [7, 7, 4, 7, 3, 4, 7, 1],
+    hard: [5, 7, 6, 9, 2, 8, 6, 5],
+  };
+
+  // Ordre des énigmes
+  const puzzleOrder = [
+    "documents",
+    "images",
+    "mail",
+    "cipher",
+    "usb",
+    "update",
+    "social",
+    "security",
+  ];
+
+  async function fetchEnigmas() {
+    try {
+      const response = await fetch("http://qg.enzo-palermo.com:8000/api/enigmas");
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      data.member.forEach((e) => {
+        if (e.games[0] === "/api/games/" + gameId && e.status === "finished") {
+          if (!finishedEnigmas.has(e.id)) {
+            finishedEnigmas.add(e.id);
+
+            const puzzleType = puzzleOrder[e.number - 1];
+            const code = codesByDifficulty[gameState.difficulty][e.number - 1];
+
+            completePuzzle(puzzleType, code, e.number, false);
+          }
+        }
+      });
+    } catch (err) {
+      console.error("Erreur lors du polling des énigmes:", err);
+    }
+  }
+
+  await fetchEnigmas();
+  setInterval(fetchEnigmas, 3000);
 }
 
 function updatePuzzleStatus() {

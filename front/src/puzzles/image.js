@@ -82,7 +82,7 @@ function loadImagesPuzzle(container) {
 
         // Compléter le puzzle
         setTimeout(() => {
-          completePuzzle("images", "7");
+          completePuzzle("images", "7", 2, true);
         }, 1000);
 
         playSound("success");
@@ -116,7 +116,7 @@ function loadImagesPuzzle(container) {
       submitBtn.textContent = "✓ Résolu";
 
       setTimeout(() => {
-        completePuzzle("images", "7");
+        completePuzzle("images", "7", 2, true);
       }, 1000);
 
       playSound("success");

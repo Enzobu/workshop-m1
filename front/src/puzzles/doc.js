@@ -119,7 +119,7 @@ Analysez ce message pour trouver le chiffre caché.`,
 
       // Compléter le puzzle
       setTimeout(() => {
-        completePuzzle("documents", puzzle.answer);
+        completePuzzle("documents", puzzle.answer, 1, true);
       }, 1000);
 
       playSound("success");

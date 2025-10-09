@@ -155,7 +155,7 @@ comme FAIL ou UNKNOWN dans des journaux sont des signaux d'alerte.`,
 
       // Compléter le puzzle
       setTimeout(() => {
-        completePuzzle("update", puzzle.answer);
+        completePuzzle("update", puzzle.answer, 6, true);
       }, 1000);
 
       playSound("success");

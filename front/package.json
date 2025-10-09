@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "lint:html": "htmlhint \"**/*.html\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:js": "eslint \"**/*.js\""
+  },
+  "devDependencies": {
+    "eslint": "^9.37.0",
+    "htmlhint": "^1.1.0",
+    "stylelint": "^16.0.0"
+  }
+}

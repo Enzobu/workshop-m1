@@ -132,9 +132,37 @@ async function loadGame() {
 
                 if (!res.ok) {
                     console.error("Erreur lors du démarrage de la partie :", res.status);
-                } else {
-                    console.log("🚀 Partie marquée comme démarrée !");
                 }
+
+                const enigmaNameList = ["documents", "images", "mail", "cipher", "usb", "update", "social", "security"];
+
+                for (enigma of enigmaNameList) {
+                    enigmaIndex = enigmaNameList.indexOf(enigma) + 1;
+
+                    const enigmaRes = await fetch(`${API_BASE}/api/enigmas`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/ld+json",
+                            "Accept": "application/ld+json"
+                        },
+                        body: JSON.stringify({ name: enigma, status: "pending", difficulty: game.difficulty, games: [`/api/games/${gameId}`], number: enigmaIndex })
+                    });
+
+
+                    if (!enigmaRes.ok) throw new Error("Erreur à la création de l'énigme");
+                }
+
+                const enigmaFinalRes = await fetch(`${API_BASE}/api/enigmas`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/ld+json",
+                        "Accept": "application/ld+json"
+                    },
+                    body: JSON.stringify({ name: 'final', status: "pending", difficulty: game.difficulty, games: [`/api/games/${gameId}`], number: enigmaIndex })
+                });
+
+
+                if (!enigmaFinalRes.ok) throw new Error("Erreur à la création de l'énigme finale");
 
                 window.location.href = `../../index.html?gameId=${gameId}`;
             } catch (err) {

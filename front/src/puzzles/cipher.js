@@ -158,7 +158,7 @@ function loadCipherPuzzle(container) {
       submitBtn.textContent = "✓ Résolu";
 
       setTimeout(() => {
-        completePuzzle("cipher", puzzle.answer);
+        completePuzzle("cipher", puzzle.answer, 4, true);
       }, 1000);
 
       playSound("success");

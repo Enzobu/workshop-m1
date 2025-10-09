@@ -133,7 +133,7 @@ La rapidité de réaction face aux incidents limite les dégâts potentiels.`,
       // Compléter l'énigme après un court délai
       setTimeout(() => {
         if (window.completePuzzle) {
-          window.completePuzzle("security", puzzle.answer);
+          window.completePuzzle("security", puzzle.answer, 8, true);
         }
       }, 1500);
     } else {
