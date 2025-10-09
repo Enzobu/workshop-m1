@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partie en cours</title>
+  <link rel="icon" href="data:,">
+  <script defer src="../js/connexion.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      text-align: center;
+      margin-top: 40px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      margin: 6px auto;
+      padding: 10px;
+      border-radius: 8px;
+      width: 200px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      font-size: 16px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+    }
+    button:hover {
+      background: #1e7e34;
+    }
+    #gameError {
+      color: red;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Joueurs dans la partie</h1>
+  <ul id="playerList"></ul>
+  <button id="readyButton">Je suis prêt</button>
+  <p id="gameError"></p>
+</body>
+</html>

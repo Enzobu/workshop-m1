@@ -7,7 +7,7 @@ function loadImagesPuzzle(container) {
         
         <div class="image-puzzle">
             <div class="image-container">
-                <img id="glitch-image" src="assets/img/glitch.svg" alt="Image glitchée" class="glitch-image" />
+                <img id="glitch-image" src="../assets/img/glitch.svg" alt="Image glitchée" class="glitch-image" />
             </div>
             
             <div class="controls">

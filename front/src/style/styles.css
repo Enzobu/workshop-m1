@@ -182,7 +182,7 @@ body {
 /* Écran bureau */
 #desktop-screen {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  background-image: url("../assets/img/Background.jpg");
+  background-image: url("../../assets/img/Background.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1272,8 +1272,6 @@ input:focus {
   font-weight: bold;
 }
 
-/* Sons (placeholder pour les effets sonores) */
 .sound-success {
-  /* Classe pour déclencher les sons de succès */
   display: none;
 }

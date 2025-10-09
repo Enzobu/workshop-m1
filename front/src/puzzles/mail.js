@@ -140,10 +140,6 @@ function loadMailPuzzle(container) {
         </div>
         
         <div id="mail-feedback" class="feedback"></div>
-        
-        <div class="error-count">
-            Erreurs trouvées : <span id="error-count">0</span>/${puzzle.maxErrors}
-        </div>
     `;
 
   // Configuration des événements
