@@ -58,6 +58,39 @@
   letter-spacing: 1px;
 }
 
+.decrypt-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.decrypt-area label {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.5rem;
+  white-space: nowrap;
+}
+
+#decrypted-text {
+  flex: 1;
+  min-height: 50px;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  resize: vertical;
+  background: #f8f9fa;
+}
+
+#decrypted-text:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
 .cipher-tools {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -155,5 +188,18 @@
   .cipher-display {
     font-size: 0.9rem;
     padding: 0.8rem;
+  }
+
+  .decrypt-area {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .decrypt-area label {
+    margin-top: 0;
+  }
+
+  #decrypted-text {
+    min-height: 60px;
   }
 }

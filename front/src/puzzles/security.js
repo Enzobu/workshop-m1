@@ -8,15 +8,15 @@ function loadSecurityPuzzle(container) {
     easy: {
       hint: "Le code est une combinaison de lettres des mots en MAJUSCULE.",
       title: "Le mot de passe sur le post-it",
-      content: `Dans une petite entreprise de production, CHAQUE employé dispose d'un compte personnel pour accéder aux machines.
+      content: `Énigme : Trouve le code caché dans les mots en MAJUSCULE.
+      <br />
+      Dans une petite entreprise de production, CHAQUE employé dispose d'un compte personnel pour accéder aux machines.
 Un jour, un technicien remarque que son collègue a collé un post-it avec son mot de passe sur l'écran pour ne pas l'OUBLIER.
 Rien de grave, pense-t-il… jusqu'à ce qu'un prestataire de passage prenne une photo de son poste.
 Le lendemain, un accès non autorisé est détecté.
 Depuis, un rappel a été fait : un mot de passe ne doit jamais être ECRIT, partagé ou affiché.
 Ce n'est pas qu'une règle, c'est une PROTECTION pour toute l'entreprise.
-
-Énigme : Trouve le code caché dans les mots en MAJUSCULE.
-
+<br />
 💡 INFO : La sécurité de base au travail passe par la protection des identifiants.
 Un mot de passe affiché, même temporairement, peut compromettre tout un système.`,
       answer: "8",
@@ -25,15 +25,15 @@ Un mot de passe affiché, même temporairement, peut compromettre tout un systè
     medium: {
       hint: "Une fuite d'information est dans le message, plusieurs lettres sont en majuscules, dans le désordre et permettront de former un mot, à toi de voir quel mot cela donne ! Un seul chiffre peut être créé.",
       title: "L'appel du faux support technique",
-      content: `Un matin, Léa, apprentie dans une société d'auTomatisation, reçoit un appel.
+      content: `Énigme : Les lettres en MAJUSCULE forment un mot. Quel chiffre ce mot représente-t-il ?
+      <br />
+      Un matin, Léa, apprentie dans une société d'auTomatisation, reçoit un appel.
 L'interlocuteur prétend apPartenir à l'équipe informatique et demande son aiDe pour "tester une mise à jour urgente".
 Pressée, elle suit leS instructions : ouvrir un lien, entrer ses identifiants.
 Quelques heures plus tard, plusieurs serveurs sont inaccessIbles — un virus a été introduit.
 Léa découvre Qu'elle a été victime d'une attaque dite "d'ingénierie sociale", où le pirate manipule pour obtenir coNfiance et accès.
 L'entreprise s'en sort, mais leçon retenUe : toujours vérifier la légitimité d'une demAnde avant d'agir.
-
-Énigme : Les lettres en MAJUSCULE forment un mot. Quel chiffre ce mot représente-t-il ?
-
+<br />
 ⚠️ ATTENTION : La manipulation et l'ingénierie sociale sont des techniques courantes.
 Les pirates exploitent la confiance et l'urgence pour obtenir des accès non autorisés.
 Toujours vérifier l'identité de l'interlocuteur avant de donner des informations sensibles.`,

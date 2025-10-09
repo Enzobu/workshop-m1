@@ -17,7 +17,7 @@ Sur la clé USB, un fichier texte contient la séquence :
 
 INF0RMATIONCONFIDENTIELLES
 
-Tâche : Trouve la position du chiffre dans le mot, celui-ci sera ta clé.
+Tâche : Trouve le chiffre dans le mot, celui-ci sera ta clé.
 
 ⚠️ ATTENTION : Ne jamais brancher une clé USB inconnue !
 Les supports amovibles sont des vecteurs courants d'intrusion.`,

@@ -16,7 +16,7 @@ lui demande de le lire à voix haute.
 
 Le message reçu sur l'écran du téléphone est :
 
-Code de vérification : 59GHFZ4O0ER34FA2F
+Code de vérification : 59GHFZ4O9ER34FA2F
 
 Le technicien dit :
 "Donnez-moi juste le chiffre du milieu, c'est tout ce dont j'ai besoin."

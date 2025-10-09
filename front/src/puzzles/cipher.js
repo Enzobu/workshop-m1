@@ -32,8 +32,8 @@ function loadCipherPuzzle(container) {
       hint: "Il faut reculer les lettres du message clair pour trouver la clé.",
       title: "Chiffrement de César - Difficile",
       instructions:
-        "Tu travailles dans une usine connectée et tu as résolu les précédents messages chiffrés laissés par un « hacker » fictif. Toutefois, nous n'avons pas trouvé la clé reliant les 2 messages, aide nous à la retrouver.",
-      cipherText: "Sraogk kf vp ofkl ñ wlfk wy vx zsbssuwqofk",
+        "Tu travailles dans une usine connectée et tu as résolu les précédentes énigmes laissées par un « hacker » fictif. Toutefois, nous n'avons pas trouvé la clé reliant les 2 messages, aide nous à la retrouver.",
+      cipherText: "Sirmf kl vj mvel r sflk uv tv tyzwwivdvek",
       clearText: "Bravo tu es venu à bout de ce chiffrement",
       shift: -9, // Clé à trouver
       answer: "9",
@@ -63,6 +63,17 @@ function loadCipherPuzzle(container) {
                 <label>Message chiffré :</label>
                 <div class="cipher-display">${puzzle.cipherText}</div>
             </div>
+            
+            ${
+              difficulty === "hard"
+                ? `
+            <div class="cipher-text">
+                <label>Message clair (pour trouver la clé) :</label>
+                <div class="cipher-display" style="background: #e8f5e8; color: #2e7d32; border: 2px solid #4caf50;">${puzzle.clearText}</div>
+            </div>
+            `
+                : ""
+            }
             
             <div class="decrypt-area">
                 <label for="decrypted-text">Texte déchiffré :</label>
@@ -126,8 +137,12 @@ function loadCipherPuzzle(container) {
 
     const code = codeInput.value.trim();
 
-    // Vérifier le texte déchiffré
-    if (decryptedText && decryptedText.value.trim() !== puzzle.clearText) {
+    // Vérifier le texte déchiffré (insensible à la casse)
+    if (
+      decryptedText &&
+      decryptedText.value.trim().toLowerCase() !==
+        puzzle.clearText.toLowerCase()
+    ) {
       feedback.innerHTML = `<div class="error">❌ Le texte déchiffré ne correspond pas. Vérifiez votre déchiffrement.</div>`;
       return;
     }
