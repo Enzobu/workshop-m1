@@ -72,7 +72,7 @@ function loadCipherPuzzle(container) {
             <div class="cipher-validation">
                 <div class="code-input-section">
                     <label for="cipher-code">Réponse finale :</label>
-                    <input type="text" id="cipher-code" maxlength="2" placeholder="?" />
+                    <input type="text" id="cipher-code" maxlength="1" placeholder="?" />
                     <button id="submit-cipher" class="btn btn-primary">Valider</button>
                 </div>
                 

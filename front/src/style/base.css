@@ -131,3 +131,16 @@ body {
 .pulse {
   animation: pulse 2s infinite;
 }
+
+/* Styles pour les inputs des énigmes */
+input[type="text"][maxlength="1"] {
+  text-align: center !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+}
+
+input[type="text"][maxlength="1"]::placeholder {
+  text-align: center !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+}

@@ -42,9 +42,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1.5rem 0.5rem 1.5rem 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  gap: 10px;
+}
+
+.modal-header .modal-controls {
+  margin-left: auto;
+  gap: 0.8rem;
 }
 
 .modal-header h2 {
@@ -55,6 +61,36 @@
 .modal-controls {
   display: flex;
   gap: 0.5rem;
+}
+
+/* Bouton de fermeture des modales */
+.btn-close {
+  background: #f44336 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  padding: 0 !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-close:hover {
+  background: #d32f2f !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn-close:active {
+  transform: scale(0.95) !important;
 }
 
 .modal-body {

@@ -51,4 +51,13 @@
 
 .code-input-section input {
   max-width: 25px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.code-input-section input::placeholder {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
