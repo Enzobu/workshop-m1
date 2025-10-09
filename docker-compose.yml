@@ -1,4 +1,4 @@
-name: workshop-m1-name
+name: workshop-m1
 
 services:
   ###> doctrine/doctrine-bundle ###
@@ -38,19 +38,30 @@ services:
   apache:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./api/Dockerfile
     container_name: workshop-m1-apache
     volumes:
-      - .:/var/www/
-      - ./docker/apache/apache.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./docker/apache/php.ini:/usr/local/etc/php/conf.d/php.custom.ini
-      - ./docker/apache/.htaccess:/var/www/public/.htaccess
+      - ./api:/var/www/
+      - ./api/docker/apache/apache.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./api/docker/apache/php.ini:/usr/local/etc/php/conf.d/php.custom.ini
+      - ./api/docker/apache/.htaccess:/var/www/public/.htaccess
     ports:
       - 8000:80
     depends_on:
       - database
     networks:
       - workshop-m1_network
+    restart: unless-stopped
+  
+  front:
+    image: ubuntu/apache2:latest
+    container_name: workshop-m1-front
+    volumes:
+      - ./front/src:/var/www/html/
+    ports:
+      - 5000:80
+    depends_on:
+      - apache
     restart: unless-stopped
 
 networks:
