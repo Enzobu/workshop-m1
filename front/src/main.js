@@ -378,7 +378,7 @@ async function updateEnigmaStatus(enigmaNumber) {
   }
 }
 
-function completePuzzle(puzzleType, code, enigmaNumber, isCallingBack = false) {
+async function completePuzzle(puzzleType, code, enigmaNumber, isCallingBack = false) {
   gameState.completedPuzzles[puzzleType] = true;
   gameState.puzzleCodes[puzzleType] = code;
 
@@ -395,7 +395,22 @@ function completePuzzle(puzzleType, code, enigmaNumber, isCallingBack = false) {
   if (Object.values(gameState.completedPuzzles).every((c) => c)) {
     elements.buttons.unlock.disabled = false;
     elements.buttons.unlock.classList.add("pulse");
-  }
+
+    const res = await fetch(`${API_BASE}/api/games/${gameId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/merge-patch+json",
+            "Accept": "application/ld+json"
+        },
+        body: JSON.stringify({
+            endAt: new Date().toISOString()
+        })
+    });
+
+    if (!res.ok) {
+        console.error("Erreur lors du démarrage de la partie :", res.status);
+    }
+}
 }
 
 
@@ -442,7 +457,14 @@ async function startEnigmaPolling() {
             const puzzleType = puzzleOrder[e.number - 1];
             const code = codesByDifficulty[gameState.difficulty][e.number - 1];
 
-            completePuzzle(puzzleType, code, e.number, false);
+            if (e.number === 9) {
+                elements.buttons.unlock.disabled = false;
+                elements.buttons.unlock.classList.add("pulse");
+            } else {
+                completePuzzle(puzzleType, code, e.number, false);
+            }
+
+
           }
         }
       });
