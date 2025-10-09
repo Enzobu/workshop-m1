@@ -1,0 +1,156 @@
+/* Modales */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  color: #333;
+  border-radius: 15px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.modal-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-body {
+  padding: 2rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Contenu des énigmes */
+.puzzle-content {
+  min-height: 400px;
+}
+
+/* Modale de déverrouillage */
+.unlock-modal .modal-body {
+  text-align: center;
+}
+
+.code-input {
+  margin: 2rem 0;
+}
+
+.code-input input {
+  font-size: 2rem;
+  text-align: center;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+}
+
+.code-input input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.code-display {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.code-digit {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.code-digit.filled {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.code-digit.correct {
+  background: #4caf50;
+  border-color: #4caf50;
+}
+
+.code-digit.incorrect {
+  background: #f44336;
+  border-color: #f44336;
+}
+
+/* Modale d'aide */
+.help-content h3 {
+  color: #667eea;
+  margin: 1.5rem 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.help-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.help-content ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.help-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}

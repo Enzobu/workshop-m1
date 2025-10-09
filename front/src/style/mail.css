@@ -1,0 +1,179 @@
+/* Énigme Mail */
+.mail-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+}
+
+.mail-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mail-subject {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-bottom: 0.5rem;
+}
+
+.mail-from {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.mail-body {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.mail-body p {
+  margin-bottom: 1rem;
+}
+
+.mail-body a {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Indiquer que les liens ne sont pas pour la navigation */
+.mail-body a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.mail-body .highlight {
+  background: #ffeb3b;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.mail-body .highlight:hover {
+  background: #ffc107;
+}
+
+.mail-body .highlight.correct {
+  background: #4caf50;
+  color: white;
+}
+
+.mail-body .highlight.incorrect {
+  background: #f44336;
+  color: white;
+}
+
+.mail-body .attachment {
+  background: #ffeb3b;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.mail-body .attachment:hover {
+  background: #ffc107;
+}
+
+.mail-body .attachment.highlighted {
+  background: #4caf50;
+  color: white;
+}
+
+/* Styles pour les éléments cliquables - seulement pour les éléments spécifiques */
+.mail-subject.highlightable,
+.mail-from.highlightable {
+  cursor: pointer !important;
+  display: inline-block;
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: transparent;
+}
+
+.mail-subject.highlighted,
+.mail-from.highlighted {
+  background: #4caf50 !important;
+  color: white !important;
+  cursor: default !important;
+}
+
+.mail-subject.highlighted:hover,
+.mail-from.highlighted:hover {
+  background: #4caf50 !important;
+  color: white !important;
+}
+
+/* Styles pour les liens suspects */
+.suspicious-link {
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #007bff !important;
+  text-decoration: underline !important;
+}
+
+.suspicious-link.highlighted {
+  background: #4caf50 !important;
+  color: white !important;
+}
+
+/* Styles pour le texte suspect dans le corps du mail */
+.suspicious-text {
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline;
+}
+
+.suspicious-text.highlighted {
+  background: #4caf50 !important;
+  color: white !important;
+  cursor: default !important;
+}
+
+.suspicious-text.highlighted:hover {
+  background: #4caf50 !important;
+  color: white !important;
+}
+
+/* Styles pour le feedback */
+.feedback {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.feedback .success {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.feedback .info {
+  background: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.feedback .error {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 0.5rem;
+  border-radius: 5px;
+}

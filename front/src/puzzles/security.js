@@ -43,16 +43,16 @@ Toujours vérifier l'identité de l'interlocuteur avant de donner des informatio
     hard: {
       hint: "Il manque certaines lettres dans le texte. Trouve les lettres manquantes pour former un mot qui donne un chiffre.",
       title: "L'incident du badge perdu",
-      content: `Dans une usine automatisée, les entrées sont sécurisées par badge.
+      content: `Énigme : Le texte contient des erreurs. Trouve le mot correct et extrais-en le chiffre.
+      <br />
+      Dans une usine automatisée, les entrées sont sécurisées par badge.
 Un opérateur perd le sien dans le parking mais ne le signale pas tout de suite, pensant le retrouver.
 Le lendemain, le système détecte une connexion au cœur du réseau à une heure inhabituelle.
 L'analyse montre u'n individu a utilisé le badge pour entrer et installer une clé USB contenant un logiiel espion.
 Aucun dommage majeur, mais l'alerte a été chaude :
 le retard du signalement a permis au pirate de passer inaperçu.
 Depuis, l'etreprise impose une règle stricte : tout incident, même anodin, doit être signalé immédiatemet.
-
-Énigme : Le texte contient des erreurs. Trouve le mot correct et extrais-en le chiffre.
-
+<br />
 🚨 CRITIQUE : La cybersécurité physique et la réactivité sont essentielles.
 Un badge perdu non signalé peut compromettre toute la sécurité d'une installation.
 La rapidité de réaction face aux incidents limite les dégâts potentiels.`,

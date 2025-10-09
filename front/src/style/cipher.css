@@ -1,0 +1,159 @@
+/* Énigme Chiffrement */
+.cipher-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: Arial, sans-serif;
+}
+
+.cipher-container h3 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.cipher-instructions {
+  background: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cipher-instructions p {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.cipher-instructions .example {
+  background: #fff3e0;
+  border: 1px solid #ffcc02;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: monospace;
+}
+
+.cipher-text {
+  margin-bottom: 1.5rem;
+}
+
+.cipher-text label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.cipher-display {
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 1rem;
+  border-radius: 5px;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.cipher-tools {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.shift-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shift-control label {
+  font-weight: 600;
+  color: #333;
+}
+
+.shift-control input[type="range"] {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.shift-control input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.shift-control .shift-value {
+  text-align: center;
+  font-weight: bold;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.cipher-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cipher-buttons button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cipher-buttons .btn-decrypt {
+  background: #4caf50;
+  color: white;
+}
+
+.cipher-buttons .btn-decrypt:hover {
+  background: #45a049;
+}
+
+.cipher-buttons .btn-reset {
+  background: #f44336;
+  color: white;
+}
+
+.cipher-buttons .btn-reset:hover {
+  background: #da190b;
+}
+
+.cipher-validation {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+}
+
+.attempts-count {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 600;
+  color: #856404;
+}
+
+/* Responsive pour l'énigme de chiffrement */
+@media (max-width: 768px) {
+  .cipher-tools {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .cipher-display {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+}

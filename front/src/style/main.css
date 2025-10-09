@@ -1,0 +1,26 @@
+/* Import des fichiers CSS modulaires */
+
+/* Base et structure */
+@import url("./base.css");
+
+/* Écrans */
+@import url("./welcome.css");
+@import url("./desktop.css");
+@import url("./victory.css");
+
+/* Composants */
+@import url("./buttons.css");
+@import url("./modals.css");
+
+/* Énigmes */
+@import url("./documents.css");
+@import url("./images.css");
+@import url("./mail.css");
+@import url("./cipher.css");
+@import url("./usb.css");
+@import url("./update.css");
+@import url("./social.css");
+@import url("./security.css");
+
+/* Responsive */
+@import url("./responsive.css");

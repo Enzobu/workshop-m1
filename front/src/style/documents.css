@@ -1,0 +1,54 @@
+/* Énigme Documents */
+.document-editor {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+  min-height: 300px;
+  margin-bottom: 1rem;
+}
+
+.document-editor h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.document-content {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.document-hint {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.document-hint.show {
+  display: block;
+}
+
+.code-input-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.code-input-section input {
+  max-width: 25px;
+}

@@ -117,6 +117,22 @@ function loadMailPuzzle(container) {
 
   const puzzle = mailPuzzles[difficulty];
 
+  // Traiter le corps du mail pour entourer les parties suspectes de spans
+  let processedBody = puzzle.body;
+  puzzle.errors.forEach((error) => {
+    if (error.element === ".mail-body") {
+      // Remplacer le texte suspect par un span cliquable
+      const regex = new RegExp(
+        `(${error.text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+        "g"
+      );
+      processedBody = processedBody.replace(
+        regex,
+        `<span class="suspicious-text" data-text="${error.text}">$1</span>`
+      );
+    }
+  });
+
   container.innerHTML = `
         <div class="puzzle-hint" style="display: none;">
             <strong>💡 Indice :</strong> ${puzzle.hint}
@@ -129,7 +145,7 @@ function loadMailPuzzle(container) {
             </div>
             
             <div class="mail-body">
-                ${puzzle.body}
+                ${processedBody}
             </div>
         </div>
         
@@ -146,11 +162,18 @@ function loadMailPuzzle(container) {
   const codeInput = container.querySelector("#mail-code");
   const submitBtn = container.querySelector("#submit-mail");
   const feedback = container.querySelector("#mail-feedback");
-  const errorCount = container.querySelector("#error-count");
 
   // Éléments à surligner (erreurs de phishing) - dynamiques selon la difficulté
   const errors = puzzle.errors.map((errorDef) => {
-    const element = container.querySelector(errorDef.element);
+    let element;
+    if (errorDef.element === ".mail-body") {
+      // Pour les erreurs dans le corps, chercher le span correspondant
+      element = container.querySelector(
+        `.suspicious-text[data-text="${errorDef.text}"]`
+      );
+    } else {
+      element = container.querySelector(errorDef.element);
+    }
     return {
       element: element,
       text: errorDef.text,
@@ -170,22 +193,34 @@ function loadMailPuzzle(container) {
     element.classList.add("highlightable");
     element.title = "Cliquez pour surligner cette erreur";
 
+    // Pour les éléments .suspicious-text, ajouter les classes CSS appropriées
+    if (element.classList.contains("suspicious-text")) {
+      element.classList.add("suspicious-text");
+    }
+
     element.addEventListener("click", function (e) {
       // Empêcher la navigation pour les liens
       e.preventDefault();
       e.stopPropagation();
 
+      // Empêcher la désélection - une fois sélectionné, on ne peut plus désélectionner
+      if (this.classList.contains("highlighted")) {
+        return;
+      }
+
       if (!this.classList.contains("highlighted")) {
         this.classList.add("highlighted", "correct");
         highlightedElements.push(this);
         foundErrors++;
-        errorCount.textContent = foundErrors;
 
         // Feedback visuel
         this.style.background = "#4caf50";
         this.style.color = "white";
         this.style.padding = "2px 4px";
         this.style.borderRadius = "3px";
+
+        // Mettre à jour le feedback
+        feedback.innerHTML = `<div class="info">✅ Erreur trouvée ! (${foundErrors}/${puzzle.maxErrors})</div>`;
 
         // Vérifier si toutes les erreurs sont trouvées
         if (foundErrors === puzzle.maxErrors) {
@@ -201,7 +236,6 @@ function loadMailPuzzle(container) {
 
           playSound("success");
         } else {
-          feedback.innerHTML = `<div class="success">✅ Erreur trouvée ! (${foundErrors}/${puzzle.maxErrors})</div>`;
           playSound("hint");
         }
       }
