@@ -118,7 +118,28 @@ async function loadGame() {
         }
 
         if (players.length === game.maxPlayer) {
-            window.location.href = `../../index.html?gameId=${gameId}`;
+            try {
+                const res = await fetch(`${API_BASE}/api/games/${gameId}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/merge-patch+json",
+                        "Accept": "application/ld+json"
+                    },
+                    body: JSON.stringify({
+                        startedAt: new Date().toISOString()
+                    })
+                });
+
+                if (!res.ok) {
+                    console.error("Erreur lors du démarrage de la partie :", res.status);
+                } else {
+                    console.log("🚀 Partie marquée comme démarrée !");
+                }
+
+                window.location.href = `../../index.html?gameId=${gameId}`;
+            } catch (err) {
+                console.error("Erreur fetch démarrage partie :", err);
+            }
         }
 
         if (gameErrorDiv) gameErrorDiv.textContent = "";
